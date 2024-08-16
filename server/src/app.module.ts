@@ -5,6 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { AuthEntity } from './auth/entities/auth.entity';
+import { UserEntity } from './user/entities/user.entity';
+import { UserModule } from './user/user.module';
 
 @Module({
   controllers: [AppController],
@@ -20,10 +22,11 @@ import { AuthEntity } from './auth/entities/auth.entity';
       password: process.env.DB_PASSWORD,
       port: Number(process.env.DB_PORT),
       username: process.env.DB_USERNAME,
-      entities: [AuthEntity],
+      entities: [AuthEntity, UserEntity],
       synchronize: true,
     }),
     AuthModule,
+    UserModule,
   ],
 })
 export class AppModule {}

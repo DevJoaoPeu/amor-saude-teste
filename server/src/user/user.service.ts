@@ -20,7 +20,9 @@ export class UserService {
   async update(body: UpdateUserDto, id: number) {
     await this.userAlredyExist(id);
 
-    return await this.repository.update(id, body);
+    await this.repository.update(id, body);
+
+    return await this.readOne(id);
   }
 
   async readOne(id: number) {

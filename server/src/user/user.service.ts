@@ -17,25 +17,27 @@ export class UserService {
     return this.repository.save(newUser);
   }
 
-  async update(body: UpdateUserDto, id: string) {
+  async update(body: UpdateUserDto, id: number) {
     await this.userAlredyExist(id);
 
     return await this.repository.update(id, body);
   }
 
-  async readOne(id: string) {
-    return this.repository.findOneOrFail({ where: { id } });
+  async readOne(id: number) {
+    return await this.userAlredyExist(id);
   }
 
   async readAll() {}
 
   async delete() {}
 
-  async userAlredyExist(id: string) {
-    const user = await this.repository.count({ where: { id } });
+  async userAlredyExist(id: number) {
+    const user = await this.repository.findOne({ where: { id } });
 
     if (!user) {
-      throw new NotFoundException('User not exists');
+      throw new NotFoundException(`User with ID ${id} not found`);
     }
+
+    return user;
   }
 }

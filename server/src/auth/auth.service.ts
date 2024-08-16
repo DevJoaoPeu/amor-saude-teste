@@ -10,7 +10,9 @@ export class AuthService {
     @InjectRepository(AuthEntity)
     private readonly repository: Repository<AuthEntity>,
   ) {}
+
   async register(data: AuthRegisterDto) {
-    return this.repository.create();
+    const newUser = this.repository.create(data);
+    return this.repository.save(newUser);
   }
 }

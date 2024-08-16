@@ -4,6 +4,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsDate,
+  Length,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -18,6 +19,7 @@ export class AuthRegisterDto {
 
   @IsString()
   @IsNotEmpty()
+  @Length(6, 30)
   password: string;
 
   @IsOptional()

@@ -1,11 +1,10 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { IsString, IsEmail, Length } from 'class-validator';
 
 @Entity()
 export class AuthEntity {
@@ -13,17 +12,12 @@ export class AuthEntity {
   id: string;
 
   @Column()
-  @IsString()
-  @Length(1, 100)
   name: string;
 
   @Column()
-  @IsEmail()
   email: string;
 
   @Column()
-  @IsString()
-  @Length(6, 100)
   password: string;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

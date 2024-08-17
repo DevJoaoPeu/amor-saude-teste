@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
@@ -14,11 +18,16 @@ export class UserService {
 
   async create({ name, email, password }: CreateUserDto) {
     const newUser = this.repository.create({ name, email, password });
-    return this.repository.save(newUser);
+    await this.userEmailExists(email);
+    return await this.repository.save(newUser);
   }
 
   async update(body: UpdateUserDto, id: string) {
     await this.userAlredyExist(id);
+
+    if (body.email) {
+      await this.userEmailExists(body.email);
+    }
 
     await this.repository.update(id, body);
 
@@ -38,7 +47,7 @@ export class UserService {
     const deletedRecord = await this.repository.delete(id);
 
     return {
-      message: 'Registro deletado com sucesso',
+      message: 'Record deleted successfully',
       deletedRecord,
     };
   }
@@ -51,5 +60,13 @@ export class UserService {
     }
 
     return user;
+  }
+
+  async userEmailExists(email: string) {
+    const userEmail = await this.repository.findOne({ where: { email } });
+
+    if (userEmail) {
+      throw new ConflictException(`Email: ${email} already registered`);
+    }
   }
 }

@@ -17,7 +17,7 @@ export class UserService {
     return this.repository.save(newUser);
   }
 
-  async update(body: UpdateUserDto, id: number) {
+  async update(body: UpdateUserDto, id: string) {
     await this.userAlredyExist(id);
 
     await this.repository.update(id, body);
@@ -25,7 +25,7 @@ export class UserService {
     return await this.readOne(id);
   }
 
-  async readOne(id: number) {
+  async readOne(id: string) {
     return await this.userAlredyExist(id);
   }
 
@@ -33,7 +33,7 @@ export class UserService {
 
   async delete() {}
 
-  async userAlredyExist(id: number) {
+  async userAlredyExist(id: string) {
     const user = await this.repository.findOne({ where: { id } });
 
     if (!user) {

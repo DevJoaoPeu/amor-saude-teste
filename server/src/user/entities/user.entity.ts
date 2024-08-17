@@ -10,8 +10,8 @@ import {
 @Entity()
 @Unique(['email'])
 export class UserEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;

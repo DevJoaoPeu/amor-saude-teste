@@ -29,9 +29,19 @@ export class UserService {
     return await this.userAlredyExist(id);
   }
 
-  async readAll() {}
+  async readAll() {
+    return this.repository.find();
+  }
 
-  async delete() {}
+  async delete(id: string) {
+    await this.userAlredyExist(id);
+    const deletedRecord = await this.repository.delete(id);
+
+    return {
+      message: 'Registro deletado com sucesso',
+      deletedRecord,
+    };
+  }
 
   async userAlredyExist(id: string) {
     const user = await this.repository.findOne({ where: { id } });

@@ -45,6 +45,7 @@ export class UserController {
   @ApiResponse({
     status: 201,
     description: 'user created successfully',
+    type: UserEntity,
   })
   @ApiResponse({
     status: 409,
@@ -62,6 +63,11 @@ export class UserController {
     description: 'Conflict',
     type: UserAlredyExistsDto,
   })
+  @ApiResponse({
+    status: 200,
+    description: 'Update',
+    type: UserEntity,
+  })
   @Patch('update/:id')
   async update(@Body() body: UpdateUserDto, @Param('id') id: string) {
     return this.userService.update(body, id);
@@ -72,6 +78,11 @@ export class UserController {
     description: 'Not Found',
     type: UserdNotFoundDto,
   })
+  @ApiResponse({
+    status: 200,
+    description: 'Find one user',
+    type: UserEntity,
+  })
   @ApiOperation({ summary: 'User search one' })
   @Get('readOne/:id')
   async readOne(@Param('id') id: string) {
@@ -79,6 +90,12 @@ export class UserController {
   }
 
   @ApiOperation({ summary: 'Users search all' })
+  @ApiResponse({
+    status: 200,
+    description: 'Find all user',
+    type: UserEntity,
+    isArray: true,
+  })
   @Get('readAll')
   async readAll() {
     return this.userService.readAll();

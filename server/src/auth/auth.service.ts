@@ -21,12 +21,14 @@ export class AuthService {
 
     const hashedPassword = await hash(data.password, 10);
 
-    const newUser = await this.repository.create({
+    const user = await this.repository.create({
       ...data,
       password: hashedPassword,
     });
 
-    return await this.repository.save(newUser);
+    await this.repository.save(user);
+
+    return this.createToken(user);
   }
 
   async createToken(user: UserEntity) {

@@ -22,6 +22,9 @@ export class UserEntity {
   @Column()
   password: string;
 
+  @Column({ default: 1 })
+  role: number;
+
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 

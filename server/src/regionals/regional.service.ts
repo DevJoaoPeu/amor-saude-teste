@@ -15,4 +15,12 @@ export class RegionalService {
     const regional = this.repository.create(data);
     return await this.repository.save(regional);
   }
+
+  async readOne(id: string) {
+    return this.repository.findOne({ where: { id } });
+  }
+
+  async readAll() {
+    return this.repository.find();
+  }
 }

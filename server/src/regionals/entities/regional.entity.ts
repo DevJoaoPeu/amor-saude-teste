@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
-import { Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 @Entity()
+@Unique(['name'])
 export class RegionalEntity {
   @PrimaryGeneratedColumn('uuid')
   @ApiProperty()
@@ -10,5 +11,6 @@ export class RegionalEntity {
 
   @IsString()
   @ApiProperty()
+  @Column()
   name: string;
 }

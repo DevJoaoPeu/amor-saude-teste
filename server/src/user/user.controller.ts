@@ -14,9 +14,13 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { UserEntity } from './entities/user.entity';
 import { User } from 'src/decorators/user.decorator';
+import { Roles } from 'src/decorators/role.decorator';
+import { Role } from 'src/enuns/role.enum';
+import { RoleGuard } from 'src/guards/role.guard';
 
 @Controller('user')
-@UseGuards(AuthGuard)
+@Roles(Role.Admin)
+@UseGuards(AuthGuard, RoleGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

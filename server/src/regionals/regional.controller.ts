@@ -1,6 +1,15 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { RegionalService } from './regional.service';
 import { CreateRegionalDto } from './dto/create-regional.dto';
+import { UpdateRegionalDto } from './dto/update-regional.dto';
 
 @Controller('regional')
 export class RegionalController {
@@ -19,5 +28,15 @@ export class RegionalController {
   @Get('readAll')
   async readAll() {
     return this.regionalService.readAll();
+  }
+
+  @Patch('update/:id')
+  async update(@Body() name: UpdateRegionalDto, @Param('id') id: string) {
+    return this.regionalService.update(name, id);
+  }
+
+  @Delete('delete/:id')
+  async delete(@Param('id') id: string) {
+    return this.regionalService.delete(id);
   }
 }

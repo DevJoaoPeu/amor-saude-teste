@@ -6,6 +6,8 @@ import { UserModule } from './user/user.module';
 import { UserEntity } from './user/entities/user.entity';
 import { RegionalModule } from './regionals/regional.module';
 import { RegionalEntity } from './regionals/entities/regional.entity';
+import { SpecialtiesModule } from './specialties/specialties.module';
+import { SpecialtiesEntity } from './specialties/entitites/specialties.entity.dto';
 
 @Module({
   imports: [
@@ -20,12 +22,13 @@ import { RegionalEntity } from './regionals/entities/regional.entity';
       password: process.env.DB_PASSWORD,
       port: Number(process.env.DB_PORT),
       username: process.env.DB_USERNAME,
-      entities: [UserEntity, RegionalEntity],
+      entities: [UserEntity, RegionalEntity, SpecialtiesEntity],
       synchronize: true,
     }),
     AuthModule,
     UserModule,
     RegionalModule,
+    SpecialtiesModule,
   ],
   controllers: [],
   providers: [],

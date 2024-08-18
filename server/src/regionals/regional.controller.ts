@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { RegionalService } from './regional.service';
 import { CreateRegionalDto } from './dto/create-regional.dto';
-import { UpdateRegionalDto } from './dto/update-regional.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
 import {
   ApiBearerAuth,
@@ -87,7 +86,7 @@ export class RegionalController {
     type: RegionalEntity,
   })
   @Patch('update/:id')
-  async update(@Body() name: UpdateRegionalDto, @Param('id') id: string) {
+  async update(@Body() name: CreateRegionalDto, @Param('id') id: string) {
     return this.regionalService.update(name, id);
   }
 

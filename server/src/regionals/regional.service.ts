@@ -7,7 +7,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RegionalEntity } from './entities/regional.entity';
 import { Repository } from 'typeorm';
 import { CreateRegionalDto } from './dto/create-regional.dto';
-import { UpdateRegionalDto } from './dto/update-regional.dto';
 
 @Injectable()
 export class RegionalService {
@@ -35,7 +34,7 @@ export class RegionalService {
     return this.repository.find();
   }
 
-  async update(name: UpdateRegionalDto, id: string) {
+  async update(name: CreateRegionalDto, id: string) {
     await this.regionalExists(name);
     await this.readOne(id);
     await this.repository.update(id, name);

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthController } from './auth.controller';
@@ -18,9 +18,10 @@ import { ConfigModule } from '@nestjs/config';
       signOptions: { expiresIn: '7 days' },
     }),
     TypeOrmModule.forFeature([UserEntity]),
-    UserModule,
+    forwardRef(() => UserModule),
   ],
   controllers: [AuthController],
   providers: [AuthService, UserService],
+  exports: [AuthService],
 })
 export class AuthModule {}

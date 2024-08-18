@@ -4,12 +4,10 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { UserEntity } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
+import { UserEntity } from './user/entities/user.entity';
 
 @Module({
-  controllers: [AppController],
-  providers: [AppService],
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env.development.local',
@@ -28,5 +26,7 @@ import { UserModule } from './user/user.module';
     AuthModule,
     UserModule,
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

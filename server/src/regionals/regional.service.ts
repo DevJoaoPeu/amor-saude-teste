@@ -40,7 +40,6 @@ export class RegionalService {
   async update(name: UpdateRegionalDto, id: string) {
     await this.regionalExists(name);
     await this.readOne(id);
-    console.log(name, id);
     await this.repository.update(id, name);
     return await this.repository.findOne({ where: { id } });
   }

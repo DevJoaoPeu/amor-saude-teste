@@ -4,6 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { UserEntity } from './user/entities/user.entity';
+import { RegionalModule } from './regionals/regional.module';
+import { RegionalEntity } from './regionals/entities/regional.entity';
 
 @Module({
   imports: [
@@ -18,11 +20,12 @@ import { UserEntity } from './user/entities/user.entity';
       password: process.env.DB_PASSWORD,
       port: Number(process.env.DB_PORT),
       username: process.env.DB_USERNAME,
-      entities: [UserEntity],
+      entities: [UserEntity, RegionalEntity],
       synchronize: true,
     }),
     AuthModule,
     UserModule,
+    RegionalModule,
   ],
   controllers: [],
   providers: [],

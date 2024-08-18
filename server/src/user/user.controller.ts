@@ -12,6 +12,8 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { UserEntity } from './entities/user.entity';
+import { User } from 'src/decorators/user.decorator';
 
 @Controller('user')
 @UseGuards(AuthGuard)
@@ -41,5 +43,10 @@ export class UserController {
   @Delete('delete/:id')
   async delete(@Param('id') id: string) {
     return this.userService.delete(id);
+  }
+
+  @Post('me')
+  async me(@User() user: UserEntity) {
+    return user;
   }
 }

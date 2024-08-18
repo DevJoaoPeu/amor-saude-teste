@@ -20,8 +20,7 @@ export class UserService {
   async create({ name, email, password }: CreateUserDto) {
     password = await hash(password, 10);
     await this.userEmailExists(email);
-    const newUser = await this.repository.create({ name, email, password });
-    return await this.repository.save(newUser);
+    return await this.repository.save({ name, email, password });
   }
 
   async update(body: UpdateUserDto, id: string) {

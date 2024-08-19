@@ -10,6 +10,6 @@ import { AuthModule } from 'src/auth/auth.module';
   imports: [TypeOrmModule.forFeature([RegionalEntity]), AuthModule, UserModule],
   controllers: [RegionalController],
   providers: [RegionalService],
-  exports: [],
+  exports: [RegionalService],
 })
 export class RegionalModule {}

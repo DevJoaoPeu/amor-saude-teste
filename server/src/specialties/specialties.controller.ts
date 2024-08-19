@@ -63,7 +63,7 @@ export class SpecialtiesController {
     return this.specialtiesService.readOne(id);
   }
 
-  @ApiOperation({ summary: 'Update partial regional' })
+  @ApiOperation({ summary: 'Update partial specialties' })
   @ApiResponse({
     status: 404,
     description: 'Not Found',
@@ -71,7 +71,7 @@ export class SpecialtiesController {
   })
   @ApiResponse({
     status: 200,
-    description: 'Regional update successfully',
+    description: 'Specialties update successfully',
     type: SpecialtiesEntity,
   })
   @Patch('update/:id')

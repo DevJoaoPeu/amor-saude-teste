@@ -16,6 +16,7 @@ export class SpecialtiesService {
   ) {}
 
   async create(data: CreateSpecialtiesDto) {
+    await this.specialtiesNameAlredyInUse(data.name);
     return await this.repository.save(data);
   }
 

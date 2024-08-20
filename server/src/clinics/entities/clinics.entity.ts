@@ -5,6 +5,7 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  JoinColumn,
 } from 'typeorm';
 import {
   IsUUID,
@@ -62,8 +63,8 @@ export class ClinicEntity {
   @ApiProperty()
   ativa: boolean;
 
-  @ManyToOne(() => RegionalEntity)
-  @IsUUID()
+  @ManyToOne(() => RegionalEntity, { eager: true })
+  @JoinColumn({ name: 'regional_id' })
   @ApiProperty()
   regional: RegionalEntity;
 

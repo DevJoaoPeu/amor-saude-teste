@@ -12,6 +12,8 @@ import { ClinicsModule } from './clinics/clinics.module';
 import { ClinicEntity } from './clinics/entities/clinics.entity';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './exeptions/exeptions-http-filter';
+import { ClinicsSpecialtiesModule } from './clinics-specialties/clinics-specialties.module';
+import { ClinicsSpecialtiesEntity } from './clinics-specialties/entities/clinics-specialties.entity';
 
 @Module({
   imports: [
@@ -26,7 +28,13 @@ import { HttpExceptionFilter } from './exeptions/exeptions-http-filter';
       password: process.env.DB_PASSWORD,
       port: Number(process.env.DB_PORT),
       username: process.env.DB_USERNAME,
-      entities: [UserEntity, RegionalEntity, SpecialtiesEntity, ClinicEntity],
+      entities: [
+        UserEntity,
+        RegionalEntity,
+        SpecialtiesEntity,
+        ClinicEntity,
+        ClinicsSpecialtiesEntity,
+      ],
       synchronize: true,
     }),
     AuthModule,
@@ -34,6 +42,7 @@ import { HttpExceptionFilter } from './exeptions/exeptions-http-filter';
     RegionalModule,
     SpecialtiesModule,
     ClinicsModule,
+    ClinicsSpecialtiesModule,
   ],
   controllers: [],
   providers: [

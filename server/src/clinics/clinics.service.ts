@@ -57,12 +57,9 @@ export class ClinicsService {
   async update(data: UpdateClinicsDto, id: string) {
     const existingClinic = await this.clinicsAlredyExists(id);
 
-    let regional: RegionalEntity;
-    if (data.regional) {
-      regional = await this.regionalService.readOne(data.regional);
-    }
-
-    console.log(regional);
+    const regional = data.regional
+      ? await this.regionalService.readOne(data.regional)
+      : existingClinic.regional;
 
     if (data.cnpj) {
       await this.clinicsCnpjAlredyExists(data.cnpj);
@@ -73,6 +70,7 @@ export class ClinicsService {
       : existingClinic.cnpj;
 
     const updatedClinic = {
+      ...existingClinic,
       ...data,
       regional,
       cnpj: updatedCnpj,
@@ -80,7 +78,7 @@ export class ClinicsService {
 
     await this.repository.update(id, updatedClinic);
 
-    return await this.readOne(id);
+    return this.readOne(id);
   }
 
   transformCnpj(value: string): string {

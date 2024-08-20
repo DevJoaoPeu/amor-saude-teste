@@ -16,9 +16,7 @@ export class SpecialtiesService {
   ) {}
 
   async create(data: CreateSpecialtiesDto) {
-    // Corrigido para passar apenas o nome como string
     await this.specialtiesNameAlredyInUse(data.name);
-    // Corrigido para garantir que `data` é um tipo aceito pelo repositório
     return await this.repository.save(data);
   }
 
@@ -43,7 +41,6 @@ export class SpecialtiesService {
   }
 
   async update(id: string, data: CreateSpecialtiesDto) {
-    // Corrigido para passar o nome da especialidade como string
     await this.specialtiesAlredyExists(id);
     await this.specialtiesNameAlredyInUse(data.name);
     await this.repository.update(id, data);

@@ -59,18 +59,14 @@ export class AuthService {
   }
 
   async login(email: string, password: string) {
-    const user = await this.repository.findOne({
-      where: { email },
-    });
+    const user = await this.repository.findOne({ where: { email } });
 
-    if (!user) {
+    const isPasswordValid = user && (await compare(password, user.password));
+
+    if (!user || !isPasswordValid) {
       throw new UnauthorizedException('Email e/ou senha incorretos');
     }
 
-    if (!(await compare(password, user.password))) {
-      throw new UnauthorizedException('Email e/ou senha incorretos');
-    }
-
-    return await this.createToken(user);
+    return this.createToken(user);
   }
 }

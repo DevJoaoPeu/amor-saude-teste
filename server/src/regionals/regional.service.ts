@@ -16,18 +16,12 @@ export class RegionalService {
   ) {}
 
   async create(data: CreateRegionalDto) {
-    await this.regionalExists(data.name);
+    await this.regionalAlredyInUse(data.name);
     return await this.repository.save(data);
   }
 
   async readOne(id: string) {
-    const regional = await this.repository.findOne({ where: { id } });
-
-    if (!regional) {
-      throw new NotFoundException('Regional not found');
-    }
-
-    return regional;
+    return await this.regionalAlredyExists(id);
   }
 
   async readAll() {
@@ -35,14 +29,14 @@ export class RegionalService {
   }
 
   async update(data: CreateRegionalDto, id: string) {
-    await this.regionalExists(data.name);
-    await this.readOne(id);
+    await this.regionalAlredyExists(id);
+    await this.regionalAlredyInUse(data.name);
     await this.repository.update(id, data);
     return await this.repository.findOne({ where: { id } });
   }
 
   async delete(id: string) {
-    await this.readOne(id);
+    await this.regionalAlredyExists(id);
     const deletedRecord = await this.repository.delete(id);
 
     return {
@@ -51,7 +45,17 @@ export class RegionalService {
     };
   }
 
-  async regionalExists(name: string) {
+  async regionalAlredyExists(id: string) {
+    const findRegional = await this.repository.findOne({ where: { id } });
+
+    if (!findRegional) {
+      throw new NotFoundException('Regional not found');
+    }
+
+    return findRegional;
+  }
+
+  async regionalAlredyInUse(name: string) {
     const findRegional = await this.repository.findOne({ where: { name } });
 
     if (findRegional) {

@@ -10,7 +10,6 @@ import { CreateClinicDto } from './dto/create-clinics.dto';
 import { RegionalService } from 'src/regionals/regional.service';
 import { cnpj } from 'cpf-cnpj-validator';
 import { UpdateClinicsDto } from './dto/update-clinics.dto';
-import { RegionalEntity } from 'src/regionals/entities/regional.entity';
 
 @Injectable()
 export class ClinicsService {
@@ -21,7 +20,9 @@ export class ClinicsService {
   ) {}
 
   async create(data: CreateClinicDto) {
-    const regional = await this.regionalService.readOne(data.regional);
+    const regional = await this.regionalService.regionalAlredyExists(
+      data.regional,
+    );
 
     const valueCnpj = this.transformCnpj(data.cnpj);
 
@@ -58,7 +59,7 @@ export class ClinicsService {
     const existingClinic = await this.clinicsAlredyExists(id);
 
     const regional = data.regional
-      ? await this.regionalService.readOne(data.regional)
+      ? await this.regionalService.regionalAlredyExists(data.regional)
       : existingClinic.regional;
 
     if (data.cnpj) {

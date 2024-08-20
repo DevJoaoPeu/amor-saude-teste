@@ -63,7 +63,7 @@ export class ClinicEntity {
   @ApiProperty()
   ativa: boolean;
 
-  @ManyToOne(() => RegionalEntity, { eager: true })
+  @ManyToOne(() => RegionalEntity, { eager: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'regional_id' })
   @ApiProperty()
   regional: RegionalEntity;

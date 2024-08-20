@@ -15,9 +15,10 @@ import {
   IsDate,
   IsOptional,
 } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { RegionalEntity } from '../../regionals/entities/regional.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { cnpj } from 'cpf-cnpj-validator';
 
 @Entity('clinics')
 export class ClinicEntity {
@@ -45,6 +46,7 @@ export class ClinicEntity {
   @IsString()
   @Length(14, 18) // Considerando a máscara 'XX.XXX.XXX/XXXX-XX'
   @ApiProperty()
+  @Transform(({ value }) => cnpj.format(value))
   cnpj: string;
 
   @Column({ name: 'data_inauguracao', type: 'date' })

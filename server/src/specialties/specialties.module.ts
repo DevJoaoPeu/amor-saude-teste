@@ -12,7 +12,7 @@ import { UserModule } from 'src/user/user.module';
     AuthModule,
     UserModule,
   ],
-  exports: [],
+  exports: [SpecialtiesService],
   providers: [SpecialtiesService],
   controllers: [SpecialtiesController],
 })

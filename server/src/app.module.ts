@@ -10,6 +10,8 @@ import { SpecialtiesModule } from './specialties/specialties.module';
 import { SpecialtiesEntity } from './specialties/entitites/specialties.entity.dto';
 import { ClinicsModule } from './clinics/clinics.module';
 import { ClinicEntity } from './clinics/entities/clinics.entity';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpExceptionFilter } from './exeptions/exeptions-http-filter';
 
 @Module({
   imports: [
@@ -34,6 +36,11 @@ import { ClinicEntity } from './clinics/entities/clinics.entity';
     ClinicsModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}

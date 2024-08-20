@@ -14,7 +14,7 @@ import { RegionalModule } from 'src/regionals/regional.module';
     UserModule,
     RegionalModule,
   ],
-  exports: [],
+  exports: [ClinicsService],
   controllers: [ClinicsController],
   providers: [ClinicsService],
 })

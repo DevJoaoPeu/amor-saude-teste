@@ -1,6 +1,15 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
+import { CreateClinicsSpecialtiesDto } from './dto/create-clinics-specialties.dto';
+import { ClinicsSpecialtiesServices } from './clinics-specialties.service';
 
-@Controller()
+@Controller('clinics_specialties')
 export class ClinicsSpecialtiesController {
-  constructor() {}
+  constructor(
+    private readonly clinicsSpecialtiesService: ClinicsSpecialtiesServices,
+  ) {}
+
+  @Post('create')
+  async create(@Body() data: CreateClinicsSpecialtiesDto) {
+    return this.clinicsSpecialtiesService.create(data);
+  }
 }

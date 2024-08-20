@@ -16,7 +16,9 @@ export class SpecialtiesService {
   ) {}
 
   async create(data: CreateSpecialtiesDto) {
+    // Corrigido para passar apenas o nome como string
     await this.specialtiesNameAlredyInUse(data.name);
+    // Corrigido para garantir que `data` é um tipo aceito pelo repositório
     return await this.repository.save(data);
   }
 
@@ -40,10 +42,11 @@ export class SpecialtiesService {
     };
   }
 
-  async update(id: string, name: CreateSpecialtiesDto) {
+  async update(id: string, data: CreateSpecialtiesDto) {
+    // Corrigido para passar o nome da especialidade como string
     await this.specialtiesAlredyExists(id);
-    await this.specialtiesNameAlredyInUse(name);
-    await this.repository.update(id, name);
+    await this.specialtiesNameAlredyInUse(data.name);
+    await this.repository.update(id, data);
     return await this.repository.findOne({ where: { id } });
   }
 
@@ -57,11 +60,11 @@ export class SpecialtiesService {
     return specialties;
   }
 
-  async specialtiesNameAlredyInUse(name) {
+  async specialtiesNameAlredyInUse(name: string) {
     const specialties = await this.repository.findOne({ where: { name } });
 
     if (specialties) {
-      throw new ConflictException(`Name: ${name}, alredy in use`);
+      throw new ConflictException(`Name: ${name}, already in use`);
     }
 
     return specialties;

@@ -34,10 +34,10 @@ export class RegionalService {
     return this.repository.find();
   }
 
-  async update(name: CreateRegionalDto, id: string) {
-    await this.regionalExists(name);
+  async update(data: CreateRegionalDto, id: string) {
+    await this.regionalExists(data.name);
     await this.readOne(id);
-    await this.repository.update(id, name);
+    await this.repository.update(id, data);
     return await this.repository.findOne({ where: { id } });
   }
 
@@ -51,7 +51,7 @@ export class RegionalService {
     };
   }
 
-  async regionalExists(name) {
+  async regionalExists(name: string) {
     const findRegional = await this.repository.findOne({ where: { name } });
 
     if (findRegional) {

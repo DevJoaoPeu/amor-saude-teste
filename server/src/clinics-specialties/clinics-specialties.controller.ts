@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { CreateClinicsSpecialtiesDto } from './dto/create-clinics-specialties.dto';
 import { ClinicsSpecialtiesServices } from './clinics-specialties.service';
 
@@ -11,5 +11,10 @@ export class ClinicsSpecialtiesController {
   @Post('create')
   async create(@Body() data: CreateClinicsSpecialtiesDto) {
     return this.clinicsSpecialtiesService.create(data);
+  }
+
+  @Get('readAll')
+  async readAll() {
+    return this.clinicsSpecialtiesService.readAll();
   }
 }

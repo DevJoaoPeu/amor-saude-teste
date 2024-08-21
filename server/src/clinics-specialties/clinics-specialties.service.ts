@@ -26,4 +26,8 @@ export class ClinicsSpecialtiesServices {
 
     return await this.repository.save(createRelation);
   }
+
+  async readAll() {
+    return this.repository.find();
+  }
 }

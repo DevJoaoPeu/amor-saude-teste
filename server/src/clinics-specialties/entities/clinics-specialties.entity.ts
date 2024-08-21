@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { ClinicEntity } from 'src/clinics/entities/clinics.entity';
 import { SpecialtiesEntity } from 'src/specialties/entitites/specialties.entity.dto';
 import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
@@ -12,6 +13,7 @@ export class ClinicsSpecialtiesEntity {
     eager: true,
   })
   @JoinColumn({ name: 'clinic_id' })
+  @ApiProperty()
   clinic: ClinicEntity;
 
   @ManyToOne(() => SpecialtiesEntity, {
@@ -19,5 +21,6 @@ export class ClinicsSpecialtiesEntity {
     eager: true,
   })
   @JoinColumn({ name: 'specialty_id' })
+  @ApiProperty()
   specialty: SpecialtiesEntity;
 }

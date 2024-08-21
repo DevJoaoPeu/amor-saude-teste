@@ -35,7 +35,7 @@ import { ClinicsSpecialtiesEntity } from './clinics-specialties/entities/clinics
         ClinicEntity,
         ClinicsSpecialtiesEntity,
       ],
-      synchronize: true,
+      synchronize: false,
       ssl: true,
     }),
     AuthModule,

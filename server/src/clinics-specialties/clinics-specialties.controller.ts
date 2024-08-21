@@ -22,7 +22,6 @@ import {
 import { ForbiddenErrorDto } from 'src/user/dto/forbidden-error.dto';
 import { ClinicsSpecialtiesEntity } from './entities/clinics-specialties.entity';
 import { ClinicsSpecialtiesNotFoundDto } from './dto/clinics-specialties-notfound.dto';
-
 @Controller('clinics_specialties')
 @ApiTags('clinics_specialties')
 @UseGuards(AuthGuard)

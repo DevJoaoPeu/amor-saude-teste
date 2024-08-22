@@ -45,3 +45,51 @@ Armazena informações sobre as regionais das clínicas.
 ### 5. `auth` e `user`
 
 Tabela para criação e autenticação de usuários.
+
+
+## Configuração do Projeto
+
+1. **Clone o repositório**
+
+   ```bash
+   git clone https://github.com/DevJoaoPeu/amor-saude-teste.git
+   cd amor-saude-teste
+   ```
+
+2. **Instalar as dependencias**
+
+   ```bash
+   npm i
+   ```
+
+3. **Configurar arquivo env** criar arquivo .env
+
+   ```bash
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_USERNAME=postgres
+   DB_PASSWORD=password
+   DB_DATABASE=amor-saude-db
+
+   SECRET_KEY='AILJDFOIDJF9329498HJH'
+   ```
+
+
+4. **Rodar docker-compose para rodar o banco**
+
+   ```bash
+   docker-compose up -D
+   ```
+
+5. **Rodar projeto**
+
+   ```bash
+   npm run start:dev
+   ```
+   
+#### Apos isso a api ficara disponivel na porta ``http://localhost:3000``
+
+#### Documentação disponivel em ``http://localhost:3000/docs``
+
+#### Deploy - ``https://amor-saude.onrender.com/``
+

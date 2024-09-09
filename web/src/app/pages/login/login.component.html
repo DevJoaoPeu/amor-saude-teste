@@ -5,7 +5,8 @@
 >
   <form [formGroup]="loginForm">
     <app-primary-input
-      formName="Email"
+      formControlName="email"
+      inputName="Email"
       type="email"
       label="Email"
       placeholder="jondoe@gmail.com"
@@ -13,11 +14,14 @@
       <img src="/assets/svg/email-icon.svg" />
     </app-primary-input>
     <app-primary-input
-      formName="Your Password"
+      formControlName="password"
+      inputName="Password"
       type="password"
       label="Password"
+      placeholder="******"
     >
       <img src="/assets/svg/password-icon.svg" />
     </app-primary-input>
+    <span>Forgot password</span>
   </form>
 </app-default-login-layout>

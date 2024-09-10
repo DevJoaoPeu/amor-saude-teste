@@ -35,4 +35,8 @@ export class LoginComponent {
   submit(){
     console.log(this.loginForm.value)
   }
+
+  navigate(){
+    console.log(this.loginForm.value)
+  }
 }

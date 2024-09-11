@@ -1,4 +1,4 @@
-@import "../../../styles//variables.scss";
+@import "../../../styles/variables.scss";
 
 .input-wrapper {
   color: $text-color;
@@ -25,9 +25,9 @@
     }
 
     input {
-      background-color: $gray-secondary-bg;
       border: none;
       border-radius: 8px 0 0 8px;
+      background-color: $gray-secondary-bg;
       padding: 12px 0 12px 20px;
       width: 100%;
     }

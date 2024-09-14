@@ -18,7 +18,7 @@ import { ClinicsSpecialtiesEntity } from './clinics-specialties/entities/clinics
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.env.production.local',
+      envFilePath: '.env',
       isGlobal: true,
     }),
     TypeOrmModule.forRoot({
@@ -35,8 +35,8 @@ import { ClinicsSpecialtiesEntity } from './clinics-specialties/entities/clinics
         ClinicEntity,
         ClinicsSpecialtiesEntity,
       ],
-      synchronize: false,
-      ssl: true,
+      synchronize: true,
+      ssl: false,
     }),
     AuthModule,
     UserModule,

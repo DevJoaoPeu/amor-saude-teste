@@ -11,7 +11,7 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.env.production.local',
+      envFilePath: '.env',
     }),
     JwtModule.register({
       secret: process.env.SECRET_KEY,

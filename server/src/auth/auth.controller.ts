@@ -6,6 +6,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtDto } from './dto/jwt.dto';
 import { UserAlredyExistsDto } from 'src/user/dto/user-exists.dto';
 import { UnauthorizedLoginDto } from './dto/unauthorized-login.dto';
+import { IAuthService } from './auth.interface';
 
 @Controller('auth')
 @ApiTags('Auth')

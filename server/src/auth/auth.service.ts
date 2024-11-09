@@ -10,9 +10,12 @@ import { Inject } from '@nestjs/common/decorators';
 import { IJwtService } from 'src/jwt/jwt-adapter.interface';
 import { JWT_SERVICE_INTERFACE } from 'src/jwt/injection.interface.types';
 import { USER_SERVICE_INTERFACE } from 'src/user/injection.interface.types';
+import { JwtDto } from './dto/jwt.dto';
+import { JwtDecodedPayload } from 'src/jwt/interface/jwt.interface';
+import { IAuthService } from './auth.interface';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements IAuthService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly repository: Repository<UserEntity>,
@@ -24,7 +27,7 @@ export class AuthService {
     private readonly jwtService: IJwtService,
   ) {}
 
-  async register(data: AuthRegisterDto) {
+  async register(data: AuthRegisterDto): Promise<JwtDto> {
     await this.userService.userEmailExists(data.email);
 
     const hashedPassword = await hash(data.password, 10);
@@ -39,7 +42,7 @@ export class AuthService {
     return this.createToken(user);
   }
 
-  async createToken(user: UserEntity) {
+  async createToken(user: UserEntity): Promise<JwtDto> {
     return {
       token: this.jwtService.sign(
         {
@@ -56,7 +59,7 @@ export class AuthService {
     };
   }
 
-  async checkToken(token: string) {
+  async checkToken(token: string): Promise<JwtDecodedPayload> {
     try {
       const data = await this.jwtService.verify(token);
 
@@ -66,7 +69,7 @@ export class AuthService {
     }
   }
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string): Promise<JwtDto> {
     const user = await this.repository.findOne({ where: { email } });
 
     const isPasswordValid = user && (await compare(password, user.password));

@@ -5,11 +5,17 @@ import { RegionalService } from './regional.service';
 import { RegionalController } from './regional.controller';
 import { UserModule } from 'src/user/user.module';
 import { AuthModule } from 'src/auth/auth.module';
+import { REGIONAL_SERVICE_INTERFACE } from './inject.interface.type';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([RegionalEntity]), AuthModule, UserModule],
+  imports: [
+    TypeOrmModule.forFeature([RegionalEntity]), AuthModule, UserModule
+  ],
   controllers: [RegionalController],
-  providers: [RegionalService],
-  exports: [RegionalService],
+  providers: [RegionalService,{
+    provide: REGIONAL_SERVICE_INTERFACE,
+    useClass: RegionalService,
+  }],
+  exports: [REGIONAL_SERVICE_INTERFACE],
 })
 export class RegionalModule {}

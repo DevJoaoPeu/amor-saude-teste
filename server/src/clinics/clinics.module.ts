@@ -6,6 +6,8 @@ import { AuthModule } from 'src/auth/auth.module';
 import { UserModule } from 'src/user/user.module';
 import { ClinicEntity } from './entities/clinics.entity';
 import { RegionalModule } from 'src/regionals/regional.module';
+import { REGIONAL_SERVICE_INTERFACE } from 'src/regionals/inject.interface.type';
+import { RegionalService } from 'src/regionals/regional.service';
 
 @Module({
   imports: [

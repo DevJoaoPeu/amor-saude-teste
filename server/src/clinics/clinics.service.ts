@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -10,13 +11,16 @@ import { CreateClinicDto } from './dto/create-clinics.dto';
 import { RegionalService } from 'src/regionals/regional.service';
 import { cnpj } from 'cpf-cnpj-validator';
 import { UpdateClinicsDto } from './dto/update-clinics.dto';
+import { REGIONAL_SERVICE_INTERFACE } from 'src/regionals/inject.interface.type';
+import { IRegionalService } from 'src/regionals/regional.interface';
 
 @Injectable()
 export class ClinicsService {
   constructor(
     @InjectRepository(ClinicEntity)
     private readonly repository: Repository<ClinicEntity>,
-    private readonly regionalService: RegionalService,
+    @Inject(REGIONAL_SERVICE_INTERFACE)
+    private readonly regionalService: IRegionalService,
   ) {}
 
   async create(data: CreateClinicDto) {

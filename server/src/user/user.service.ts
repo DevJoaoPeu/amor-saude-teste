@@ -9,9 +9,10 @@ import { UserEntity } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { hash } from 'bcrypt';
+import { IUserService } from './user.interface';
 
 @Injectable()
-export class UserService {
+export class UserService implements IUserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly repository: Repository<UserEntity>,
@@ -63,7 +64,7 @@ export class UserService {
     return user;
   }
 
-  async userEmailExists(email: string) {
+  async userEmailExists(email: string): Promise<void> {
     const userEmail = await this.repository.findOne({ where: { email } });
 
     if (userEmail) {

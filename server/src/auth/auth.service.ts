@@ -8,15 +8,19 @@ import { UserEntity } from 'src/user/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { Inject } from '@nestjs/common/decorators';
 import { IJwtService } from 'src/jwt/jwt-adapter.interface';
-import { IJwtServiceToken } from 'src/jwt/injection.interface.types';
+import { JWT_SERVICE_INTERFACE } from 'src/jwt/injection.interface.types';
+import { USER_SERVICE_INTERFACE } from 'src/user/injection.interface.types';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly repository: Repository<UserEntity>,
+
+    @Inject(USER_SERVICE_INTERFACE)
     private readonly userService: UserService,
-    @Inject(IJwtServiceToken) 
+
+    @Inject(JWT_SERVICE_INTERFACE) 
     private readonly jwtService: IJwtService,
   ) {}
 

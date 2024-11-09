@@ -7,9 +7,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RegionalEntity } from './entities/regional.entity';
 import { Repository } from 'typeorm';
 import { CreateRegionalDto } from './dto/create-regional.dto';
+import { IRegionalService } from './regional.interface';
 
 @Injectable()
-export class RegionalService {
+export class RegionalService implements IRegionalService {
   constructor(
     @InjectRepository(RegionalEntity)
     private readonly repository: Repository<RegionalEntity>,
@@ -45,7 +46,7 @@ export class RegionalService {
     };
   }
 
-  async regionalAlredyExists(id: string) {
+  async regionalAlredyExists(id: string): Promise<RegionalEntity> {
     const findRegional = await this.repository.findOne({ where: { id } });
 
     if (!findRegional) {

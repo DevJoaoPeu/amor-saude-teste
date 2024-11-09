@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { UserController } from './user.controller';
 import { AuthModule } from 'src/auth/auth.module';
+import { USER_SERVICE_INTERFACE } from './injection.interface.types';
 
 @Module({
   imports: [
@@ -11,7 +12,10 @@ import { AuthModule } from 'src/auth/auth.module';
     forwardRef(() => AuthModule),
   ],
   controllers: [UserController],
-  providers: [UserService],
-  exports: [UserService],
+  providers: [UserService, {
+    provide: USER_SERVICE_INTERFACE,
+    useClass: UserService,
+  }],
+  exports: [UserService, USER_SERVICE_INTERFACE],
 })
 export class UserModule {}

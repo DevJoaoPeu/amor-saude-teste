@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtServiceAdapter } from './jwt-adapter.service';
 import { ConfigModule } from '@nestjs/config';
-import { IJwtServiceToken } from './injection.interface.types';
+import { JWT_SERVICE_INTERFACE } from './injection.interface.types';
 
 @Module({
   imports: [
@@ -17,10 +17,10 @@ import { IJwtServiceToken } from './injection.interface.types';
 ],
   providers: [
     {
-      provide: IJwtServiceToken,
+      provide: JWT_SERVICE_INTERFACE,
       useClass: JwtServiceAdapter,
     },
   ],
-  exports: [IJwtServiceToken],
+  exports: [JWT_SERVICE_INTERFACE],
 })
 export class JwtAdapterModule {}

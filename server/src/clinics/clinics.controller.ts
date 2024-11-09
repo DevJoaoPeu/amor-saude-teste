@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   Patch,
   Post,
@@ -22,6 +23,8 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { ForbiddenErrorDto } from 'src/user/dto/forbidden-error.dto';
 import { ClinicEntity } from './entities/clinics.entity';
 import { ClinicsNotFoundDto } from './dto/clinics-notfound.dto';
+import { IClinicsService } from './clinics.interface';
+import { CLINICS_SERVICE_INTERFACE } from './inject.interface.type';
 
 @Controller('clinics')
 @ApiTags('Clinics')
@@ -34,7 +37,10 @@ import { ClinicsNotFoundDto } from './dto/clinics-notfound.dto';
   type: ForbiddenErrorDto,
 })
 export class ClinicsController {
-  constructor(private readonly clinicsService: ClinicsService) {}
+  constructor(
+    @Inject(CLINICS_SERVICE_INTERFACE)
+    private readonly clinicsService: IClinicsService
+  ) {}
 
   @ApiOperation({ summary: 'Create clinics' })
   @ApiResponse({

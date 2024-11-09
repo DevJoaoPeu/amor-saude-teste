@@ -8,6 +8,7 @@ import { ClinicEntity } from './entities/clinics.entity';
 import { RegionalModule } from 'src/regionals/regional.module';
 import { REGIONAL_SERVICE_INTERFACE } from 'src/regionals/inject.interface.type';
 import { RegionalService } from 'src/regionals/regional.service';
+import { CLINICS_SERVICE_INTERFACE } from './inject.interface.type';
 
 @Module({
   imports: [
@@ -18,6 +19,9 @@ import { RegionalService } from 'src/regionals/regional.service';
   ],
   exports: [ClinicsService],
   controllers: [ClinicsController],
-  providers: [ClinicsService],
+  providers: [ClinicsService, {
+    provide: CLINICS_SERVICE_INTERFACE,
+    useClass: ClinicsService,
+  }],
 })
 export class ClinicsModule {}

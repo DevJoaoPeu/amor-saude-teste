@@ -13,9 +13,10 @@ import { cnpj } from 'cpf-cnpj-validator';
 import { UpdateClinicsDto } from './dto/update-clinics.dto';
 import { REGIONAL_SERVICE_INTERFACE } from 'src/regionals/inject.interface.type';
 import { IRegionalService } from 'src/regionals/regional.interface';
+import { IClinicsService } from './clinics.interface';
 
 @Injectable()
-export class ClinicsService {
+export class ClinicsService implements IClinicsService {
   constructor(
     @InjectRepository(ClinicEntity)
     private readonly repository: Repository<ClinicEntity>,
@@ -23,7 +24,7 @@ export class ClinicsService {
     private readonly regionalService: IRegionalService,
   ) {}
 
-  async create(data: CreateClinicDto) {
+  async create(data: CreateClinicDto): Promise<ClinicEntity> {
     const regional = await this.regionalService.regionalAlredyExists(
       data.regional,
     );
@@ -41,7 +42,7 @@ export class ClinicsService {
     return await this.repository.save(newClinic);
   }
 
-  async readOne(id: string) {
+  async readOne(id: string): Promise<ClinicEntity> {
     return this.clinicsAlredyExists(id);
   }
 
@@ -49,17 +50,17 @@ export class ClinicsService {
     return this.repository.find();
   }
 
-  async delete(id: string) {
+  async delete(id: string): Promise<{ message: string; affected: number }> {
     await this.clinicsAlredyExists(id);
     const deletedRecord = await this.repository.delete(id);
 
     return {
       message: 'Record deleted successfully',
-      deletedRecord,
+      affected: deletedRecord.affected,
     };
   }
 
-  async update(data: UpdateClinicsDto, id: string) {
+  async update(data: UpdateClinicsDto, id: string): Promise<ClinicEntity> {
     const existingClinic = await this.clinicsAlredyExists(id);
 
     const regional = data.regional
@@ -93,7 +94,7 @@ export class ClinicsService {
     return cnpj.format(value);
   }
 
-  async clinicsAlredyExists(id: string) {
+  async clinicsAlredyExists(id: string): Promise<ClinicEntity> {
     const clinics = await this.repository.findOne({ where: { id } });
 
     if (!clinics) {
@@ -103,7 +104,7 @@ export class ClinicsService {
     return clinics;
   }
 
-  async clinicsCnpjAlredyExists(cnpj: string) {
+  async clinicsCnpjAlredyExists(cnpj: string): Promise<ClinicEntity> {
     const clinics = await this.repository.findOne({ where: { cnpj } });
 
     if (clinics) {

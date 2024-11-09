@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SpecialtiesEntity } from './entitites/specialties.entity.dto';
 import { AuthModule } from 'src/auth/auth.module';
 import { UserModule } from 'src/user/user.module';
+import { SPECIALTIES_SERVICE_INTERFACE } from './inject.interface.types';
 
 @Module({
   imports: [
@@ -13,7 +14,10 @@ import { UserModule } from 'src/user/user.module';
     UserModule,
   ],
   exports: [SpecialtiesService],
-  providers: [SpecialtiesService],
+  providers: [SpecialtiesService, {
+    provide: SPECIALTIES_SERVICE_INTERFACE,
+    useClass: SpecialtiesService
+  }],
   controllers: [SpecialtiesController],
 })
 export class SpecialtiesModule {}

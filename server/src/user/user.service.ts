@@ -18,13 +18,13 @@ export class UserService implements IUserService {
     private readonly repository: Repository<UserEntity>,
   ) {}
 
-  async create({ name, email, password }: CreateUserDto) {
+  async create({ name, email, password }: CreateUserDto): Promise<UserEntity> {
     password = await hash(password, 10);
     await this.userEmailExists(email);
     return await this.repository.save({ name, email, password });
   }
 
-  async update(body: UpdateUserDto, id: string) {
+  async update(body: UpdateUserDto, id: string): Promise<UserEntity> {
     await this.userAlredyExist(id);
 
     if (body.email) {
@@ -36,25 +36,25 @@ export class UserService implements IUserService {
     return await this.readOne(id);
   }
 
-  async readOne(id: string) {
+  async readOne(id: string): Promise<UserEntity> {
     return await this.userAlredyExist(id);
   }
 
-  async readAll() {
+  async readAll(): Promise<UserEntity[]> {
     return this.repository.find();
   }
 
-  async delete(id: string) {
+  async delete(id: string): Promise<{ message: string; affected: number }> {
     await this.userAlredyExist(id);
     const deletedRecord = await this.repository.delete(id);
 
     return {
       message: 'Record deleted successfully',
-      deletedRecord,
+      affected: deletedRecord.affected,
     };
   }
 
-  async userAlredyExist(id: string) {
+  async userAlredyExist(id: string): Promise<UserEntity> {
     const user = await this.repository.findOne({ where: { id } });
 
     if (!user) {

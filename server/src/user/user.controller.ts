@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   Patch,
   Post,
@@ -27,6 +28,8 @@ import {
 import { ForbiddenErrorDto } from './dto/forbidden-error.dto';
 import { UserAlredyExistsDto } from './dto/user-exists.dto';
 import { UserdNotFoundDto } from './dto/userid-notFond.dto';
+import { USER_SERVICE_INTERFACE } from './injection.interface.types';
+import { IUserService } from './user.interface';
 @Controller('user')
 @Roles(Role.Admin)
 @UseGuards(AuthGuard, RoleGuard)
@@ -39,7 +42,10 @@ import { UserdNotFoundDto } from './dto/userid-notFond.dto';
   type: ForbiddenErrorDto,
 })
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    @Inject(USER_SERVICE_INTERFACE)
+    private readonly userService: IUserService
+  ) {}
 
   @ApiOperation({ summary: 'Create User' })
   @ApiResponse({

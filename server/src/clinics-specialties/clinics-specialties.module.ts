@@ -7,6 +7,7 @@ import { ClinicsModule } from 'src/clinics/clinics.module';
 import { SpecialtiesModule } from 'src/specialties/specialties.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { UserModule } from 'src/user/user.module';
+import { CLINICS_SPECIALTIES_SERVICE_INTERFACE } from './inject.interface.types';
 
 @Module({
   imports: [
@@ -17,7 +18,10 @@ import { UserModule } from 'src/user/user.module';
     UserModule,
   ],
   controllers: [ClinicsSpecialtiesController],
-  providers: [ClinicsSpecialtiesServices],
+  providers: [ClinicsSpecialtiesServices, {
+    provide: CLINICS_SPECIALTIES_SERVICE_INTERFACE,
+    useClass: ClinicsSpecialtiesServices,
+  }],
   exports: [],
 })
 export class ClinicsSpecialtiesModule {}

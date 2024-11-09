@@ -1,22 +1,15 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UserService } from 'src/user/user.service';
 import { UserModule } from 'src/user/user.module';
 import { UserEntity } from 'src/user/entities/user.entity';
-import { ConfigModule } from '@nestjs/config';
+import { JwtAdapterModule } from 'src/jwt/jwt-adapter.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: '.env',
-    }),
-    JwtModule.register({
-      secret: process.env.SECRET_KEY,
-      signOptions: { expiresIn: '7 days' },
-    }),
+    JwtAdapterModule,
     TypeOrmModule.forFeature([UserEntity]),
     forwardRef(() => UserModule),
   ],

@@ -6,6 +6,9 @@ import { compare, hash } from 'bcrypt';
 import { UserService } from 'src/user/user.service';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
+import { Inject } from '@nestjs/common/decorators';
+import { IJwtService } from 'src/jwt/jwt-adapter.interface';
+import { IJwtServiceToken } from 'src/jwt/injection.interface.types';
 
 @Injectable()
 export class AuthService {
@@ -13,7 +16,8 @@ export class AuthService {
     @InjectRepository(UserEntity)
     private readonly repository: Repository<UserEntity>,
     private readonly userService: UserService,
-    private readonly jwtService: JwtService,
+    @Inject(IJwtServiceToken) 
+    private readonly jwtService: IJwtService,
   ) {}
 
   async register(data: AuthRegisterDto) {

@@ -16,33 +16,33 @@ export class RegionalService implements IRegionalService {
     private readonly repository: Repository<RegionalEntity>,
   ) {}
 
-  async create(data: CreateRegionalDto) {
+  async create(data: CreateRegionalDto): Promise<RegionalEntity> {
     await this.regionalAlredyInUse(data.name);
     return await this.repository.save(data);
   }
 
-  async readOne(id: string) {
+  async readOne(id: string): Promise<RegionalEntity> {
     return await this.regionalAlredyExists(id);
   }
 
-  async readAll() {
+  async readAll(): Promise<RegionalEntity[]> {
     return this.repository.find();
   }
 
-  async update(data: CreateRegionalDto, id: string) {
+  async update(data: CreateRegionalDto, id: string): Promise<RegionalEntity> {
     await this.regionalAlredyExists(id);
     await this.regionalAlredyInUse(data.name);
     await this.repository.update(id, data);
     return await this.repository.findOne({ where: { id } });
   }
 
-  async delete(id: string) {
+  async delete(id: string): Promise<{ message: string; affected: number }> {
     await this.regionalAlredyExists(id);
     const deletedRecord = await this.repository.delete(id);
 
     return {
       message: 'Record deleted successfully',
-      deletedRecord,
+      affected: deletedRecord.affected,
     };
   }
 
@@ -56,7 +56,7 @@ export class RegionalService implements IRegionalService {
     return findRegional;
   }
 
-  async regionalAlredyInUse(name: string) {
+  async regionalAlredyInUse(name: string): Promise<void> {
     const findRegional = await this.repository.findOne({ where: { name } });
 
     if (findRegional) {

@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   Patch,
   Post,
@@ -21,6 +22,8 @@ import {
 import { ForbiddenErrorDto } from 'src/user/dto/forbidden-error.dto';
 import { RegionalEntity } from './entities/regional.entity';
 import { RegionalNotFoundDto } from './dto/regional-notfound.dto';
+import { REGIONAL_SERVICE_INTERFACE } from './inject.interface.type';
+import { IRegionalService } from './regional.interface';
 
 @Controller('regional')
 @UseGuards(AuthGuard)
@@ -33,7 +36,10 @@ import { RegionalNotFoundDto } from './dto/regional-notfound.dto';
   type: ForbiddenErrorDto,
 })
 export class RegionalController {
-  constructor(private readonly regionalService: RegionalService) {}
+  constructor(
+    @Inject(REGIONAL_SERVICE_INTERFACE)
+    private readonly regionalService: IRegionalService
+  ) {}
 
   @ApiOperation({ summary: 'Create regional' })
   @Post('create')

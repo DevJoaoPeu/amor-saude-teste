@@ -13,7 +13,7 @@ import { SPECIALTIES_SERVICE_INTERFACE } from './inject.interface.types';
     AuthModule,
     UserModule,
   ],
-  exports: [SpecialtiesService],
+  exports: [SpecialtiesService, SPECIALTIES_SERVICE_INTERFACE],
   providers: [SpecialtiesService, {
     provide: SPECIALTIES_SERVICE_INTERFACE,
     useClass: SpecialtiesService

@@ -8,4 +8,5 @@ export interface IClinicsService {
     readAll(): Promise<ClinicEntity[]>;
     delete(id: string): Promise<{ message: string; affected: number }>;
     update(data: UpdateClinicsDto, id: string): Promise<ClinicEntity>;
+    clinicsAlredyExists(id: string): Promise<ClinicEntity>;
 }

@@ -8,4 +8,5 @@ export interface ISpecialtiesService {
     readOne(id: string): Promise<SpecialtiesEntity>
     update(id: string, data: CreateSpecialtiesDto): Promise<SpecialtiesEntity>
     delete(id: string): Promise<{ message: string; affected: number }>  
+    specialtiesAlredyExists(id: string): Promise<SpecialtiesEntity>
 }

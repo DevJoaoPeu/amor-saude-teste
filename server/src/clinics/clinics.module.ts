@@ -17,7 +17,7 @@ import { CLINICS_SERVICE_INTERFACE } from './inject.interface.type';
     UserModule,
     RegionalModule,
   ],
-  exports: [ClinicsService],
+  exports: [ClinicsService, CLINICS_SERVICE_INTERFACE],
   controllers: [ClinicsController],
   providers: [ClinicsService, {
     provide: CLINICS_SERVICE_INTERFACE,

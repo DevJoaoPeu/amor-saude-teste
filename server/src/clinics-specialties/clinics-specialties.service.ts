@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ClinicsSpecialtiesEntity } from './entities/clinics-specialties.entity';
@@ -7,14 +7,22 @@ import { ClinicsService } from 'src/clinics/clinics.service';
 import { SpecialtiesService } from 'src/specialties/specialties.service';
 import { UpdateClinicsSpecialtiesDto } from './dto/update-clinics-specialties.dto';
 import { IClinicsSpecialtiesService } from './clinics-specialties.interface';
+import { CLINICS_SERVICE_INTERFACE } from 'src/clinics/inject.interface.type';
+import { IClinicsService } from 'src/clinics/clinics.interface';
+import { SPECIALTIES_SERVICE_INTERFACE } from 'src/specialties/inject.interface.types';
+import { ISpecialtiesService } from 'src/specialties/specialties.interface';
 
 @Injectable()
 export class ClinicsSpecialtiesServices implements IClinicsSpecialtiesService {
   constructor(
     @InjectRepository(ClinicsSpecialtiesEntity)
     private readonly repository: Repository<ClinicsSpecialtiesEntity>,
-    private readonly clinic: ClinicsService,
-    private readonly specialties: SpecialtiesService,
+
+    @Inject(CLINICS_SERVICE_INTERFACE)
+    private readonly clinic: IClinicsService,
+
+    @Inject(SPECIALTIES_SERVICE_INTERFACE)
+    private readonly specialties: ISpecialtiesService,
   ) {}
 
   async create(data: CreateClinicsSpecialtiesDto): Promise<ClinicsSpecialtiesEntity> {

@@ -8,6 +8,8 @@ import { SpecialtiesModule } from 'src/specialties/specialties.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { UserModule } from 'src/user/user.module';
 import { CLINICS_SPECIALTIES_SERVICE_INTERFACE } from './inject.interface.types';
+import { SPECIALTIES_SERVICE_INTERFACE } from 'src/specialties/inject.interface.types';
+import { SpecialtiesService } from 'src/specialties/specialties.service';
 
 @Module({
   imports: [
@@ -18,10 +20,12 @@ import { CLINICS_SPECIALTIES_SERVICE_INTERFACE } from './inject.interface.types'
     UserModule,
   ],
   controllers: [ClinicsSpecialtiesController],
-  providers: [ClinicsSpecialtiesServices, {
+  providers: [ClinicsSpecialtiesServices, 
+  {
     provide: CLINICS_SPECIALTIES_SERVICE_INTERFACE,
     useClass: ClinicsSpecialtiesServices,
-  }],
+  },
+],
   exports: [],
 })
 export class ClinicsSpecialtiesModule {}

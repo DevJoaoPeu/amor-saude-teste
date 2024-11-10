@@ -17,8 +17,8 @@ import { AUTH_SERVICE_INTERFACE } from './injection.interface.type';
   controllers: [AuthController],
   providers: [AuthService, UserService, {
     provide: AUTH_SERVICE_INTERFACE,
-    useValue: AuthService,
+    useClass: AuthService,
   }],
-  exports: [AuthService],
+  exports: [AuthService, AUTH_SERVICE_INTERFACE],
 })
 export class AuthModule {}

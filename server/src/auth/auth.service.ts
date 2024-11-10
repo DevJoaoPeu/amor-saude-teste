@@ -13,6 +13,7 @@ import { USER_SERVICE_INTERFACE } from 'src/user/injection.interface.types';
 import { JwtDto } from './dto/jwt.dto';
 import { JwtDecodedPayload } from 'src/jwt/interface/jwt.interface';
 import { IAuthService } from './auth.interface';
+import { IUserService } from 'src/user/user.interface';
 
 @Injectable()
 export class AuthService implements IAuthService {
@@ -21,7 +22,7 @@ export class AuthService implements IAuthService {
     private readonly repository: Repository<UserEntity>,
 
     @Inject(USER_SERVICE_INTERFACE)
-    private readonly userService: UserService,
+    private readonly userService: IUserService,
 
     @Inject(JWT_SERVICE_INTERFACE) 
     private readonly jwtService: IJwtService,

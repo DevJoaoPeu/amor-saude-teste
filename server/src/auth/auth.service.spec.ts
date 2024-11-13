@@ -25,6 +25,20 @@ describe('AuthService', () => {
   let userService: IUserService;
   let jwtService: IJwtService;
 
+  const createUserDto: AuthRegisterDto = { 
+    name: 'John Doe', 
+    email: 'john@example.com', 
+    password: 'password123' 
+  };
+  const hashedPassword = 'hashed_password';
+  const savedUser = { 
+    id: '1', 
+    email: createUserDto.email, 
+    name: createUserDto.name, 
+    password: hashedPassword 
+  } as UserEntity;
+  const expectedToken: JwtDto = { token: 'jwt_token_example' };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -35,27 +49,21 @@ describe('AuthService', () => {
         {
           provide: getRepositoryToken(UserEntity),
           useValue: {
-            create: jest.fn(),
-            save: jest.fn(),
+            create: jest.fn().mockReturnValue(savedUser),
+            save: jest.fn().mockResolvedValue(savedUser),
             findOne: jest.fn(),
           },
         },
         {
           provide: USER_SERVICE_INTERFACE,
           useValue: { 
-            userEmailExists: jest.fn().mockResolvedValue(undefined), 
-            userAlredyExist: jest.fn().mockResolvedValue({
-              id: '1',
-              name: 'John Doe',
-              email: 'john@example.com',
-              password: 'hashed_password',
-            }),
+            userEmailExists: jest.fn(), 
           },
         },
         {
           provide: JWT_SERVICE_INTERFACE,
           useValue: {
-            sign: jest.fn().mockReturnValue('jwt_token_example'),
+            sign: jest.fn().mockReturnValue(expectedToken.token),
             verify: jest.fn(),
           },
         },
@@ -69,20 +77,12 @@ describe('AuthService', () => {
   });
 
   describe('AuthService - create', () => {
-    it('deve criar um usuário com sucesso', async () => {
-      const createUserDto: AuthRegisterDto = { name: 'John Doe', email: 'john@example.com', password: 'password123' };
-      const hashedPassword = 'hashed_password';
-      const savedUser = { id: '1', email: createUserDto.email, name: createUserDto.name, password: hashedPassword } as UserEntity;
-      const expectedToken: JwtDto = { token: 'jwt_token_example' };
-      
-      // Configure os mocks para o teste
+    beforeEach(() => {
       (hash as jest.Mock).mockResolvedValue(hashedPassword);
-      jest.spyOn(userRepository, 'create').mockReturnValue(savedUser);
-      jest.spyOn(userRepository, 'save').mockResolvedValue(savedUser);
-      jest.spyOn(userService, 'userEmailExists').mockResolvedValue(undefined);
-      jest.spyOn(jwtService, 'sign').mockReturnValue(expectedToken.token);
+    });
 
-      const result = await authService.register(createUserDto);
+    it('deve criar um usuário com sucesso', async () => {
+      await expect(authService.register(createUserDto)).resolves.toEqual(expectedToken);
 
       expect(userService.userEmailExists).toHaveBeenCalledWith(createUserDto.email);
       expect(hash).toHaveBeenCalledWith(createUserDto.password, 10);
@@ -104,12 +104,9 @@ describe('AuthService', () => {
           audience: 'users',
         },
       );
-      expect(result).toEqual(expectedToken);
     });
 
     it('deve lançar ConflictException se o email já existir', async () => {
-      const createUserDto: AuthRegisterDto = { name: 'Jane Doe', email: 'jane@example.com', password: 'password123' };
-
       jest.spyOn(userService, 'userEmailExists').mockRejectedValue(new ConflictException('Email already exists'));
 
       await expect(authService.register(createUserDto)).rejects.toThrow(ConflictException);
@@ -118,3 +115,4 @@ describe('AuthService', () => {
     });
   });
 });
+

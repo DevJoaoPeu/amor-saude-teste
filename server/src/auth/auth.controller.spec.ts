@@ -6,16 +6,48 @@ import { UserAlredyExistsDto } from '../user/dto/user-exists.dto';
 import { AuthRegisterDto } from './dto/auth-register.dto';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { AUTH_SERVICE_INTERFACE } from './injection.interface.type';
+import { ConflictException } from '@nestjs/common';
 
 describe('AuthController', () => {
   let authController: AuthController;
   let authService: IAuthService;
 
+  const mockAuthService: Partial<IAuthService> = {
+    register: jest.fn(),
+    login: jest.fn(),
+  };
+
+
+  const body: AuthRegisterDto = {
+    name: 'John Doe',
+    email: 'test@example.com',
+    password: 'password123',
+  };
+
+  const loginDto: AuthLoginDto = {
+    email: 'test@example.com',
+    password: 'password123',
+  };
+
+  const expectedResponse: JwtDto = {
+    token: 'jwt_token_example',
+  };
+
+  const errorResponse: UserAlredyExistsDto = {
+    statusCode: 409,
+    error: 'User already exists',
+    message: 'Conflict',
+  };
+
+  const unauthorizedResponse = {
+    statusCode: 401,
+    error: 'Unauthorized',
+    message: 'Invalid credentials',
+  };
+
+
   beforeEach(async () => {
-    const mockAuthService: Partial<IAuthService> = {
-      register: jest.fn(),
-      login: jest.fn(),
-    };
+    jest.clearAllMocks();
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
@@ -37,35 +69,16 @@ describe('AuthController', () => {
 
   describe('register', () => {
     it('deve chamar o authService.register com o body correto', async () => {
-      const body: AuthRegisterDto = {
-        name: 'John Doe',
-        email: 'test@example.com',
-        password: 'password123',
-      };
-      const expectedResponse: JwtDto = {
-        token: 'jwt_token_example',
-      };
-
       (authService.register as jest.Mock).mockResolvedValue(expectedResponse);
 
       const result = await authController.register(body);
 
       expect(authService.register).toHaveBeenCalledWith(body);
+      expect(authService.register).toHaveBeenCalledTimes(1);
       expect(result).toEqual(expectedResponse);
     });
 
     it('deve retornar um erro de conflito se o usuário já existe', async () => {
-      const body: AuthRegisterDto = {
-        name: 'John Doe',
-        email: 'test@example.com',
-        password: 'password123',
-      };
-      const errorResponse: UserAlredyExistsDto = {
-        statusCode: 409,
-        error: 'User already exists',
-        message: 'Conflict',
-      };
-
       (authService.register as jest.Mock).mockRejectedValue(errorResponse);
 
       await expect(authController.register(body)).rejects.toEqual(errorResponse);
@@ -75,37 +88,21 @@ describe('AuthController', () => {
 
   describe('login', () => {
     it('deve chamar o authService.login com email e password corretos', async () => {
-      const loginDto: AuthLoginDto = {
-        email: 'test@example.com',
-        password: 'password123',
-      };
-      const expectedResponse: JwtDto = {
-        token: 'jwt_token_example',
-      };
-
       (authService.login as jest.Mock).mockResolvedValue(expectedResponse);
 
       const result = await authController.login(loginDto);
 
       expect(authService.login).toHaveBeenCalledWith(loginDto.email, loginDto.password);
+      expect(authService.login).toHaveBeenCalledTimes(1);
       expect(result).toEqual(expectedResponse);
     });
 
     it('deve retornar um erro de autorização se o login falhar', async () => {
-      const loginDto: AuthLoginDto = {
-        email: 'test@example.com',
-        password: 'wrongpassword',
-      };
-      const errorResponse = {
-        statusCode: 401,
-        error: 'Unauthorized',
-        message: 'Invalid credentials',
-      };
+      (authService.login as jest.Mock).mockRejectedValue(unauthorizedResponse);
 
-      (authService.login as jest.Mock).mockRejectedValue(errorResponse);
-
-      await expect(authController.login(loginDto)).rejects.toEqual(errorResponse);
+      await expect(authController.login(loginDto)).rejects.toEqual(unauthorizedResponse);
       expect(authService.login).toHaveBeenCalledWith(loginDto.email, loginDto.password);
+      expect(authService.login).toHaveBeenCalledTimes(1);
     });
   });
 });

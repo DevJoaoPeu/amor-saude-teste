@@ -6,7 +6,8 @@ import { UserService } from 'src/user/user.service';
 import { UserModule } from 'src/user/user.module';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { JwtAdapterModule } from 'src/jwt/jwt-adapter.module';
-import { AUTH_SERVICE_INTERFACE } from './injection.interface.type';
+import { AUTH_SERVICE_INTERFACE } from './interface/injection.interface.type';
+import { IAuthService } from './interface/auth.interface';
 
 @Module({
   imports: [
@@ -16,9 +17,9 @@ import { AUTH_SERVICE_INTERFACE } from './injection.interface.type';
   ],
   controllers: [AuthController],
   providers: [AuthService, UserService, {
-    provide: AUTH_SERVICE_INTERFACE,
+    provide: IAuthService,
     useClass: AuthService,
   }],
-  exports: [AuthService, AUTH_SERVICE_INTERFACE],
+  exports: [AuthService, IAuthService],
 })
 export class AuthModule {}

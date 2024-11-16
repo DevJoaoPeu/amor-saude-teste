@@ -9,11 +9,11 @@ import { JwtService } from '@nestjs/jwt';
 import { Inject } from '@nestjs/common/decorators';
 import { IJwtService } from 'src/jwt/jwt-adapter.interface';
 import { JWT_SERVICE_INTERFACE } from 'src/jwt/injection.interface.types';
-import { USER_SERVICE_INTERFACE } from 'src/user/injection.interface.types';
+import { USER_SERVICE_INTERFACE } from 'src/user/interface/injection.interface.types';
 import { JwtDto } from './dto/jwt.dto';
 import { JwtDecodedPayload } from 'src/jwt/interface/jwt.interface';
-import { IAuthService } from './auth.interface';
-import { IUserService } from 'src/user/user.interface';
+import { IAuthService } from './interface/auth.interface';
+import { IUserService } from 'src/user/interface/user.interface';
 
 @Injectable()
 export class AuthService implements IAuthService {

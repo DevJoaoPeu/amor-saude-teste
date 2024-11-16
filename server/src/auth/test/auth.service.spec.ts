@@ -1,19 +1,17 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from './auth.service';
-import { AuthRegisterDto } from './dto/auth-register.dto';
 import { ConflictException } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { UserEntity } from 'src/user/entities/user.entity';
-import { IJwtService } from 'src/jwt/jwt-adapter.interface';
-import { IUserService } from 'src/user/user.interface';
-import { JwtDto } from './dto/jwt.dto';
+import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { hash } from 'bcrypt';
-import { USER_SERVICE_INTERFACE } from 'src/user/injection.interface.types';
 import { JWT_SERVICE_INTERFACE } from 'src/jwt/injection.interface.types';
-import { AUTH_SERVICE_INTERFACE } from './injection.interface.type';
-import { create } from 'domain';
-import { IAuthService } from './auth.interface';
+import { IJwtService } from 'src/jwt/jwt-adapter.interface';
+import { UserEntity } from 'src/user/entities/user.entity';
+import { USER_SERVICE_INTERFACE } from 'src/user/interface/injection.interface.types';
+import { IUserService } from 'src/user/interface/user.interface';
+import { Repository } from 'typeorm';
+import { IAuthService } from '../interface/auth.interface';
+import { AuthService } from '../auth.service';
+import { AUTH_SERVICE_INTERFACE } from '../interface/injection.interface.type';
+import { createUserDto, expectedToken, hashedPassword, savedUser } from './utils';
 
 jest.mock('bcrypt', () => ({
   hash: jest.fn(),
@@ -25,19 +23,7 @@ describe('AuthService', () => {
   let userService: IUserService;
   let jwtService: IJwtService;
 
-  const createUserDto: AuthRegisterDto = { 
-    name: 'John Doe', 
-    email: 'john@example.com', 
-    password: 'password123' 
-  };
-  const hashedPassword = 'hashed_password';
-  const savedUser = { 
-    id: '1', 
-    email: createUserDto.email, 
-    name: createUserDto.name, 
-    password: hashedPassword 
-  } as UserEntity;
-  const expectedToken: JwtDto = { token: 'jwt_token_example' };
+  jest.mock('bcrypt', () => ({ hash: jest.fn() }));
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

@@ -28,8 +28,8 @@ import {
 import { ForbiddenErrorDto } from './dto/forbidden-error.dto';
 import { UserAlredyExistsDto } from './dto/user-exists.dto';
 import { UserdNotFoundDto } from './dto/userid-notFond.dto';
-import { USER_SERVICE_INTERFACE } from './injection.interface.types';
-import { IUserService } from './user.interface';
+import { USER_SERVICE_INTERFACE } from './interface/injection.interface.types';
+import { IUserService } from './interface/user.interface';
 @Controller('user')
 @Roles(Role.Admin)
 @UseGuards(AuthGuard, RoleGuard)

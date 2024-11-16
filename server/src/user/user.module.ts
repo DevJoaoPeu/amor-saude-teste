@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { UserController } from './user.controller';
 import { AuthModule } from 'src/auth/auth.module';
-import { USER_SERVICE_INTERFACE } from './injection.interface.types';
+import { USER_SERVICE_INTERFACE } from './interface/injection.interface.types';
 
 @Module({
   imports: [

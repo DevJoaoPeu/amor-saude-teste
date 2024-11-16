@@ -1,41 +1,15 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { USER_SERVICE_INTERFACE } from "./injection.interface.types";
-import { UserController } from "./user.controller";
-import { IUserService } from "./user.interface";
-import { AUTH_SERVICE_INTERFACE } from "src/auth/injection.interface.type";
+import { AUTH_SERVICE_INTERFACE } from "src/auth/interface/injection.interface.type";
 import { AuthGuard } from "src/guards/auth.guard";
-import { UserAlredyExistsDto } from "./dto/user-exists.dto";
-import { UserdNotFoundDto } from "./dto/userid-notFond.dto";
+import { USER_SERVICE_INTERFACE } from "../interface/injection.interface.types";
+import { IUserService } from "../interface/user.interface";
+import { UserController } from "../user.controller";
+import { body, errorResponse, id, mockDeletedRecordMessage, userNotFound } from "./utils";
 
 describe('UserController', () => {
     let userController: UserController;
     let userService: IUserService;
 
-    const id = '23266745-e633-401b-8422-6de304455398'
-    const mockDeletedRecord = { affected: 1 };
-    const mockDeletedRecordMessage = {
-        message: 'Record deleted successfully',
-        affected: 1,
-      };
-
-    const body = {
-        name: 'John Doe',
-        email: 'john@example.com',
-        password: 'password123'
-    };
-
-    const errorResponse: UserAlredyExistsDto = {
-        statusCode: 409,
-        error: 'User already exists',
-        message: 'Conflict',
-    };
-
-    const userNotFound: UserdNotFoundDto = {
-        statusCode: 404,
-        message: "User with ID 23266745-e633-401b-8422-6de304455398 not found",
-        error: "Not Found"
-    };
-  
     const mockUserService: Partial<IUserService> = {
         create: jest.fn().mockResolvedValue(body),
         readOne: jest.fn(), 

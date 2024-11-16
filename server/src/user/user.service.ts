@@ -9,7 +9,7 @@ import { UserEntity } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { hash } from 'bcrypt';
-import { IUserService } from './user.interface';
+import { IUserService } from './interface/user.interface';
 
 @Injectable()
 export class UserService implements IUserService {

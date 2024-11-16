@@ -1,16 +1,12 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { USER_SERVICE_INTERFACE } from "./injection.interface.types";
-import { UserService } from "./user.service";
-import { UserEntity } from "./entities/user.entity";
-import { AUTH_SERVICE_INTERFACE } from "src/auth/injection.interface.type";
-import { IUserService } from "./user.interface";
-import { JwtDto } from "src/auth/dto/jwt.dto";
-import { Repository } from "typeorm";
-import { getRepositoryToken } from "@nestjs/typeorm";
 import { ConflictException } from "@nestjs/common";
-import { hash } from "bcrypt";
-import { UserdNotFoundDto } from "./dto/userid-notFond.dto";
-import { mock } from "node:test";
+import { Test, TestingModule } from "@nestjs/testing";
+import { getRepositoryToken } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { UserEntity } from "../entities/user.entity";
+import { USER_SERVICE_INTERFACE } from "../interface/injection.interface.types";
+import { IUserService } from "../interface/user.interface";
+import { UserService } from "../user.service";
+import { body, id, mockDeletedRecordMessage, mockUser, userNotFound } from "./utils";
 
 jest.mock('bcrypt', () => ({
     hash: jest.fn().mockResolvedValue('hashed_password'),
@@ -19,37 +15,6 @@ jest.mock('bcrypt', () => ({
 describe('UserService', () => {
     let userService: IUserService;
     let userRepository: Repository<UserEntity>;
-
-    const body = { 
-        name: 'John Doe', 
-        email: 'john@example.com', 
-        password: 'password123' 
-    };
-
-    const id = '23266745-e633-401b-8422-6de304455398'
-
-    const mockUser = {
-        id: '23266745-e633-401b-8422-6de304455398',
-        name: 'John Doe',
-        email: 'john@example.com',
-        password: 'hashed_password', 
-        role: 1, 
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    } as UserEntity;
-
-    const userNotFound: UserdNotFoundDto = {
-        statusCode: 404,
-        message: "User with ID 23266745-e633-401b-8422-6de304455398 not found",
-        error: "Not Found"
-    };
-
-    const mockDeletedRecordMessage = {
-        message: 'Record deleted successfully',
-        affected: 1,
-    };
-
-    const expectedToken: JwtDto = { token: 'jwt_token_example' };
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({

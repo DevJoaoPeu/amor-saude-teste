@@ -1,6 +1,6 @@
-import { CreateUserDto } from "./dto/create-user.dto";
-import { UpdateUserDto } from "./dto/update-user.dto";
-import { UserEntity } from "./entities/user.entity";
+import { CreateUserDto } from "../dto/create-user.dto";
+import { UpdateUserDto } from "../dto/update-user.dto";
+import { UserEntity } from "../entities/user.entity";
 
 export interface IUserService {
     userEmailExists(email: string): Promise<void>;

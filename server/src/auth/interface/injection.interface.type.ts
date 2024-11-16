@@ -1,1 +1,0 @@
-export const AUTH_SERVICE_INTERFACE = Symbol('IAuthService');

@@ -1,19 +1,16 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthRegisterDto } from './dto/auth-register.dto';
-import { AuthLoginDto } from './dto/auth-login.dto';
+import { Body, Controller, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { JwtDto } from './dto/jwt.dto';
 import { UserAlredyExistsDto } from 'src/user/dto/user-exists.dto';
+import { AuthLoginDto } from './dto/auth-login.dto';
+import { AuthRegisterDto } from './dto/auth-register.dto';
+import { JwtDto } from './dto/jwt.dto';
 import { UnauthorizedLoginDto } from './dto/unauthorized-login.dto';
-import { IAuthService } from './auth.interface';
-import { AUTH_SERVICE_INTERFACE } from './injection.interface.type';
+import { IAuthService } from './interface/auth.interface';
 
 @Controller('auth')
 @ApiTags('Auth')
 export class AuthController {
   constructor(
-    @Inject(AUTH_SERVICE_INTERFACE)
     private readonly authService: IAuthService
   ) {}
 

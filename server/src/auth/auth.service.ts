@@ -1,19 +1,16 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthRegisterDto } from './dto/auth-register.dto';
-import { Repository } from 'typeorm';
+import { Inject } from '@nestjs/common/decorators';
 import { InjectRepository } from '@nestjs/typeorm';
 import { compare, hash } from 'bcrypt';
-import { UserService } from 'src/user/user.service';
-import { UserEntity } from 'src/user/entities/user.entity';
-import { JwtService } from '@nestjs/jwt';
-import { Inject } from '@nestjs/common/decorators';
-import { IJwtService } from 'src/jwt/jwt-adapter.interface';
 import { JWT_SERVICE_INTERFACE } from 'src/jwt/injection.interface.types';
-import { USER_SERVICE_INTERFACE } from 'src/user/interface/injection.interface.types';
-import { JwtDto } from './dto/jwt.dto';
 import { JwtDecodedPayload } from 'src/jwt/interface/jwt.interface';
-import { IAuthService } from './interface/auth.interface';
+import { IJwtService } from 'src/jwt/jwt-adapter.interface';
+import { UserEntity } from 'src/user/entities/user.entity';
 import { IUserService } from 'src/user/interface/user.interface';
+import { Repository } from 'typeorm';
+import { AuthRegisterDto } from './dto/auth-register.dto';
+import { JwtDto } from './dto/jwt.dto';
+import { IAuthService } from './interface/auth.interface';
 
 @Injectable()
 export class AuthService implements IAuthService {
@@ -21,7 +18,6 @@ export class AuthService implements IAuthService {
     @InjectRepository(UserEntity)
     private readonly repository: Repository<UserEntity>,
 
-    @Inject(USER_SERVICE_INTERFACE)
     private readonly userService: IUserService,
 
     @Inject(JWT_SERVICE_INTERFACE) 

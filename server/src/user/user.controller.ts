@@ -28,7 +28,6 @@ import {
 import { ForbiddenErrorDto } from './dto/forbidden-error.dto';
 import { UserAlredyExistsDto } from './dto/user-exists.dto';
 import { UserdNotFoundDto } from './dto/userid-notFond.dto';
-import { USER_SERVICE_INTERFACE } from './interface/injection.interface.types';
 import { IUserService } from './interface/user.interface';
 @Controller('user')
 @Roles(Role.Admin)
@@ -43,7 +42,6 @@ import { IUserService } from './interface/user.interface';
 })
 export class UserController {
   constructor(
-    @Inject(USER_SERVICE_INTERFACE)
     private readonly userService: IUserService
   ) {}
 

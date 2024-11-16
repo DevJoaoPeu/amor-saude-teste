@@ -3,7 +3,6 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { UserEntity } from "../entities/user.entity";
-import { USER_SERVICE_INTERFACE } from "../interface/injection.interface.types";
 import { IUserService } from "../interface/user.interface";
 import { UserService } from "../user.service";
 import { body, id, mockDeletedRecordMessage, mockUser, userNotFound } from "./utils";
@@ -20,7 +19,7 @@ describe('UserService', () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
                 {
-                    provide: USER_SERVICE_INTERFACE,
+                    provide: IUserService,
                     useClass: UserService,
                 },
                 {
@@ -37,7 +36,7 @@ describe('UserService', () => {
             ],
         }).compile();
 
-        userService = module.get<IUserService>(USER_SERVICE_INTERFACE);
+        userService = module.get<IUserService>(IUserService);
         userRepository = module.get<Repository<UserEntity>>(getRepositoryToken(UserEntity));
     })
 

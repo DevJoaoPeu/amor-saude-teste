@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { UserController } from './user.controller';
 import { AuthModule } from 'src/auth/auth.module';
-import { USER_SERVICE_INTERFACE } from './interface/injection.interface.types';
+import { IUserService } from './interface/user.interface';
 
 @Module({
   imports: [
@@ -13,9 +13,9 @@ import { USER_SERVICE_INTERFACE } from './interface/injection.interface.types';
   ],
   controllers: [UserController],
   providers: [UserService, {
-    provide: USER_SERVICE_INTERFACE,
+    provide: IUserService,
     useClass: UserService,
   }],
-  exports: [UserService, USER_SERVICE_INTERFACE],
+  exports: [UserService, IUserService],
 })
 export class UserModule {}

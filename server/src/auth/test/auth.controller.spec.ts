@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from '../auth.controller';
 import { IAuthService } from '../interface/auth.interface';
-import { AUTH_SERVICE_INTERFACE } from '../interface/injection.interface.type';
 import { body, errorResponse, expectedToken, loginDto, unauthorizedResponse } from './utils';
 
 describe('AuthController', () => {
@@ -20,14 +19,14 @@ describe('AuthController', () => {
       controllers: [AuthController],
       providers: [
         {
-          provide: AUTH_SERVICE_INTERFACE,
+          provide: IAuthService,
           useValue: mockAuthService,
         },
       ],
     }).compile();
 
     authController = module.get<AuthController>(AuthController);
-    authService = module.get<IAuthService>(AUTH_SERVICE_INTERFACE);
+    authService = module.get<IAuthService>(IAuthService);
   });
 
   it('deve estar definido', () => {

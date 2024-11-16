@@ -5,12 +5,10 @@ import { hash } from 'bcrypt';
 import { JWT_SERVICE_INTERFACE } from 'src/jwt/injection.interface.types';
 import { IJwtService } from 'src/jwt/jwt-adapter.interface';
 import { UserEntity } from 'src/user/entities/user.entity';
-import { USER_SERVICE_INTERFACE } from 'src/user/interface/injection.interface.types';
 import { IUserService } from 'src/user/interface/user.interface';
 import { Repository } from 'typeorm';
-import { IAuthService } from '../interface/auth.interface';
 import { AuthService } from '../auth.service';
-import { AUTH_SERVICE_INTERFACE } from '../interface/injection.interface.type';
+import { IAuthService } from '../interface/auth.interface';
 import { createUserDto, expectedToken, hashedPassword, savedUser } from './utils';
 
 jest.mock('bcrypt', () => ({
@@ -29,7 +27,7 @@ describe('AuthService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
-          provide: AUTH_SERVICE_INTERFACE,
+          provide: IAuthService,
           useClass: AuthService,
         },
         {
@@ -41,7 +39,7 @@ describe('AuthService', () => {
           },
         },
         {
-          provide: USER_SERVICE_INTERFACE,
+          provide: IUserService,
           useValue: { 
             userEmailExists: jest.fn(), 
           },
@@ -56,9 +54,9 @@ describe('AuthService', () => {
       ],
     }).compile();
 
-    authService = module.get<IAuthService>(AUTH_SERVICE_INTERFACE);
+    authService = module.get<IAuthService>(IAuthService);
     userRepository = module.get<Repository<UserEntity>>(getRepositoryToken(UserEntity));
-    userService = module.get<IUserService>(USER_SERVICE_INTERFACE);
+    userService = module.get<IUserService>(IUserService);
     jwtService = module.get<IJwtService>(JWT_SERVICE_INTERFACE);
   });
 

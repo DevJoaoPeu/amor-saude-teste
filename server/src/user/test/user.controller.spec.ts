@@ -1,7 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { AUTH_SERVICE_INTERFACE } from "src/auth/interface/injection.interface.type";
+import { IAuthService } from "src/auth/interface/auth.interface";
 import { AuthGuard } from "src/guards/auth.guard";
-import { USER_SERVICE_INTERFACE } from "../interface/injection.interface.types";
 import { IUserService } from "../interface/user.interface";
 import { UserController } from "../user.controller";
 import { body, errorResponse, id, mockDeletedRecordMessage, userNotFound } from "./utils";
@@ -31,11 +30,11 @@ describe('UserController', () => {
         controllers: [UserController],
         providers: [
           {
-            provide: USER_SERVICE_INTERFACE,
+            provide: IUserService,
             useValue: mockUserService,
           },
           {
-            provide: AUTH_SERVICE_INTERFACE, 
+            provide: IAuthService, 
             useValue: mockAuthService,
           },
         ],
@@ -45,7 +44,7 @@ describe('UserController', () => {
       .compile();
   
       userController = module.get<UserController>(UserController);
-      userService = module.get<IUserService>(USER_SERVICE_INTERFACE);
+      userService = module.get<IUserService>(IUserService);
     });
 
     it('should be defined', () => {

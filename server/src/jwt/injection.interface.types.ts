@@ -1,1 +1,0 @@
-export const JWT_SERVICE_INTERFACE = Symbol('IJwtServiceToken');

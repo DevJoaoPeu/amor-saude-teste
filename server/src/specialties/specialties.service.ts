@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SpecialtiesEntity } from './entitites/specialties.entity.dto';
 import { CreateSpecialtiesDto } from './dto/create-specialties.dto';
-import { ISpecialtiesService } from './specialties.interface';
+import { ISpecialtiesService } from './interface/specialties.interface';
 
 @Injectable()
 export class SpecialtiesService implements ISpecialtiesService {

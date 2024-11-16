@@ -1,10 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { Inject } from '@nestjs/common/decorators';
 import { InjectRepository } from '@nestjs/typeorm';
 import { compare, hash } from 'bcrypt';
-import { JWT_SERVICE_INTERFACE } from 'src/jwt/injection.interface.types';
 import { JwtDecodedPayload } from 'src/jwt/interface/jwt.interface';
-import { IJwtService } from 'src/jwt/jwt-adapter.interface';
+import { IJwtService } from 'src/jwt/interface/jwt-adapter.interface';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { IUserService } from 'src/user/interface/user.interface';
 import { Repository } from 'typeorm';
@@ -20,7 +18,6 @@ export class AuthService implements IAuthService {
 
     private readonly userService: IUserService,
 
-    @Inject(JWT_SERVICE_INTERFACE) 
     private readonly jwtService: IJwtService,
   ) {}
 

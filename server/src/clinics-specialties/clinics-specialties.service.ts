@@ -1,16 +1,12 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { IClinicsService } from 'src/clinics/interface/clinics.interface';
+import { ISpecialtiesService } from 'src/specialties/interface/specialties.interface';
 import { Repository } from 'typeorm';
-import { ClinicsSpecialtiesEntity } from './entities/clinics-specialties.entity';
 import { CreateClinicsSpecialtiesDto } from './dto/create-clinics-specialties.dto';
-import { ClinicsService } from 'src/clinics/clinics.service';
-import { SpecialtiesService } from 'src/specialties/specialties.service';
 import { UpdateClinicsSpecialtiesDto } from './dto/update-clinics-specialties.dto';
-import { IClinicsSpecialtiesService } from './clinics-specialties.interface';
-import { CLINICS_SERVICE_INTERFACE } from 'src/clinics/inject.interface.type';
-import { IClinicsService } from 'src/clinics/clinics.interface';
-import { SPECIALTIES_SERVICE_INTERFACE } from 'src/specialties/inject.interface.types';
-import { ISpecialtiesService } from 'src/specialties/specialties.interface';
+import { ClinicsSpecialtiesEntity } from './entities/clinics-specialties.entity';
+import { IClinicsSpecialtiesService } from './interface/clinics-specialties.interface';
 
 @Injectable()
 export class ClinicsSpecialtiesServices implements IClinicsSpecialtiesService {
@@ -18,10 +14,8 @@ export class ClinicsSpecialtiesServices implements IClinicsSpecialtiesService {
     @InjectRepository(ClinicsSpecialtiesEntity)
     private readonly repository: Repository<ClinicsSpecialtiesEntity>,
 
-    @Inject(CLINICS_SERVICE_INTERFACE)
     private readonly clinic: IClinicsService,
 
-    @Inject(SPECIALTIES_SERVICE_INTERFACE)
     private readonly specialties: ISpecialtiesService,
   ) {}
 

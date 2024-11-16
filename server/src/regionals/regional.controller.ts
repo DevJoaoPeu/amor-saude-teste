@@ -3,15 +3,11 @@ import {
   Controller,
   Delete,
   Get,
-  Inject,
   Param,
   Patch,
   Post,
-  UseGuards,
+  UseGuards
 } from '@nestjs/common';
-import { RegionalService } from './regional.service';
-import { CreateRegionalDto } from './dto/create-regional.dto';
-import { AuthGuard } from 'src/guards/auth.guard';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -19,11 +15,12 @@ import {
   ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
+import { AuthGuard } from 'src/guards/auth.guard';
 import { ForbiddenErrorDto } from 'src/user/dto/forbidden-error.dto';
-import { RegionalEntity } from './entities/regional.entity';
+import { CreateRegionalDto } from './dto/create-regional.dto';
 import { RegionalNotFoundDto } from './dto/regional-notfound.dto';
-import { REGIONAL_SERVICE_INTERFACE } from './inject.interface.type';
-import { IRegionalService } from './regional.interface';
+import { RegionalEntity } from './entities/regional.entity';
+import { IRegionalService } from './interface/regional.interface';
 
 @Controller('regional')
 @UseGuards(AuthGuard)
@@ -37,7 +34,6 @@ import { IRegionalService } from './regional.interface';
 })
 export class RegionalController {
   constructor(
-    @Inject(REGIONAL_SERVICE_INTERFACE)
     private readonly regionalService: IRegionalService
   ) {}
 

@@ -3,16 +3,11 @@ import {
   Controller,
   Delete,
   Get,
-  Inject,
   Param,
   Patch,
   Post,
-  UseGuards,
+  UseGuards
 } from '@nestjs/common';
-import { CreateClinicsSpecialtiesDto } from './dto/create-clinics-specialties.dto';
-import { ClinicsSpecialtiesServices } from './clinics-specialties.service';
-import { UpdateClinicsSpecialtiesDto } from './dto/update-clinics-specialties.dto';
-import { AuthGuard } from 'src/guards/auth.guard';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -20,11 +15,13 @@ import {
   ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
+import { AuthGuard } from 'src/guards/auth.guard';
 import { ForbiddenErrorDto } from 'src/user/dto/forbidden-error.dto';
-import { ClinicsSpecialtiesEntity } from './entities/clinics-specialties.entity';
 import { ClinicsSpecialtiesNotFoundDto } from './dto/clinics-specialties-notfound.dto';
-import { CLINICS_SPECIALTIES_SERVICE_INTERFACE } from './inject.interface.types';
-import { IClinicsSpecialtiesService } from './clinics-specialties.interface';
+import { CreateClinicsSpecialtiesDto } from './dto/create-clinics-specialties.dto';
+import { UpdateClinicsSpecialtiesDto } from './dto/update-clinics-specialties.dto';
+import { ClinicsSpecialtiesEntity } from './entities/clinics-specialties.entity';
+import { IClinicsSpecialtiesService } from './interface/clinics-specialties.interface';
 @Controller('clinics_specialties')
 @ApiTags('clinics_specialties')
 @UseGuards(AuthGuard)
@@ -37,7 +34,6 @@ import { IClinicsSpecialtiesService } from './clinics-specialties.interface';
 })
 export class ClinicsSpecialtiesController {
   constructor(
-    @Inject(CLINICS_SPECIALTIES_SERVICE_INTERFACE)
     private readonly clinicsSpecialtiesService: IClinicsSpecialtiesService,
   ) {}
 

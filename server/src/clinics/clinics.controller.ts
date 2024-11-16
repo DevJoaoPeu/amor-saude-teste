@@ -3,15 +3,11 @@ import {
   Controller,
   Delete,
   Get,
-  Inject,
   Param,
   Patch,
   Post,
-  UseGuards,
+  UseGuards
 } from '@nestjs/common';
-import { ClinicsService } from './clinics.service';
-import { CreateClinicDto } from './dto/create-clinics.dto';
-import { UpdateClinicsDto } from './dto/update-clinics.dto';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -21,10 +17,11 @@ import {
 } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { ForbiddenErrorDto } from 'src/user/dto/forbidden-error.dto';
-import { ClinicEntity } from './entities/clinics.entity';
 import { ClinicsNotFoundDto } from './dto/clinics-notfound.dto';
-import { IClinicsService } from './clinics.interface';
-import { CLINICS_SERVICE_INTERFACE } from './inject.interface.type';
+import { CreateClinicDto } from './dto/create-clinics.dto';
+import { UpdateClinicsDto } from './dto/update-clinics.dto';
+import { ClinicEntity } from './entities/clinics.entity';
+import { IClinicsService } from './interface/clinics.interface';
 
 @Controller('clinics')
 @ApiTags('Clinics')
@@ -38,7 +35,6 @@ import { CLINICS_SERVICE_INTERFACE } from './inject.interface.type';
 })
 export class ClinicsController {
   constructor(
-    @Inject(CLINICS_SERVICE_INTERFACE)
     private readonly clinicsService: IClinicsService
   ) {}
 

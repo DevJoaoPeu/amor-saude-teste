@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { hash } from 'bcrypt';
 import { JWT_SERVICE_INTERFACE } from 'src/jwt/injection.interface.types';
-import { IJwtService } from 'src/jwt/jwt-adapter.interface';
+import { IJwtService } from 'src/jwt/interface/jwt-adapter.interface';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { IUserService } from 'src/user/interface/user.interface';
 import { Repository } from 'typeorm';

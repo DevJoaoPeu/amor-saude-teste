@@ -1,15 +1,13 @@
 import { Module } from '@nestjs/common';
-import { ClinicsSpecialtiesController } from './clinics-specialties.controller';
-import { ClinicsSpecialtiesServices } from './clinics-specialties.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ClinicsSpecialtiesEntity } from './entities/clinics-specialties.entity';
+import { AuthModule } from 'src/auth/auth.module';
 import { ClinicsModule } from 'src/clinics/clinics.module';
 import { SpecialtiesModule } from 'src/specialties/specialties.module';
-import { AuthModule } from 'src/auth/auth.module';
 import { UserModule } from 'src/user/user.module';
-import { CLINICS_SPECIALTIES_SERVICE_INTERFACE } from './inject.interface.types';
-import { SPECIALTIES_SERVICE_INTERFACE } from 'src/specialties/inject.interface.types';
-import { SpecialtiesService } from 'src/specialties/specialties.service';
+import { ClinicsSpecialtiesController } from './clinics-specialties.controller';
+import { ClinicsSpecialtiesServices } from './clinics-specialties.service';
+import { ClinicsSpecialtiesEntity } from './entities/clinics-specialties.entity';
+import { IClinicsSpecialtiesService } from './interface/clinics-specialties.interface';
 
 @Module({
   imports: [
@@ -22,7 +20,7 @@ import { SpecialtiesService } from 'src/specialties/specialties.service';
   controllers: [ClinicsSpecialtiesController],
   providers: [ClinicsSpecialtiesServices, 
   {
-    provide: CLINICS_SPECIALTIES_SERVICE_INTERFACE,
+    provide: IClinicsSpecialtiesService,
     useClass: ClinicsSpecialtiesServices,
   },
 ],

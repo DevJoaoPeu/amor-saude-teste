@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
-import { JwtServiceAdapter } from './jwt-adapter.service';
 import { ConfigModule } from '@nestjs/config';
-import { JWT_SERVICE_INTERFACE } from './injection.interface.types';
+import { JwtModule } from '@nestjs/jwt';
+import { IJwtService } from './interface/jwt-adapter.interface';
+import { JwtServiceAdapter } from './jwt-adapter.service';
 
 @Module({
   imports: [
@@ -17,10 +17,10 @@ import { JWT_SERVICE_INTERFACE } from './injection.interface.types';
 ],
   providers: [
     {
-      provide: JWT_SERVICE_INTERFACE,
+      provide: IJwtService,
       useClass: JwtServiceAdapter,
     },
   ],
-  exports: [JWT_SERVICE_INTERFACE],
+  exports: [IJwtService],
 })
 export class JwtAdapterModule {}

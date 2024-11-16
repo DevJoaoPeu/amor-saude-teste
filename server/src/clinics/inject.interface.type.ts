@@ -1,1 +1,0 @@
-export const CLINICS_SERVICE_INTERFACE = Symbol('IClinicsService');

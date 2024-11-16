@@ -3,14 +3,11 @@ import {
   Controller,
   Delete,
   Get,
-  Inject,
   Param,
   Patch,
   Post,
-  UseGuards,
+  UseGuards
 } from '@nestjs/common';
-import { SpecialtiesService } from './specialties.service';
-import { CreateSpecialtiesDto } from './dto/create-specialties.dto';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -18,13 +15,12 @@ import {
   ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
-import { ForbiddenErrorDto } from 'src/user/dto/forbidden-error.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
-import { SpecialtiesEntity } from './entitites/specialties.entity.dto';
+import { ForbiddenErrorDto } from 'src/user/dto/forbidden-error.dto';
+import { CreateSpecialtiesDto } from './dto/create-specialties.dto';
 import { SpecialtiesNotFoundDto } from './dto/specialties-notfound-error.dto';
-import { SPECIALTIES_SERVICE_INTERFACE } from './inject.interface.types';
-import { ISpecialtiesService } from './specialties.interface';
-import { UpdateClinicsSpecialtiesDto } from 'src/clinics-specialties/dto/update-clinics-specialties.dto';
+import { SpecialtiesEntity } from './entitites/specialties.entity.dto';
+import { ISpecialtiesService } from './interface/specialties.interface';
 
 @Controller('specialties')
 @ApiTags('Specialties')
@@ -38,7 +34,6 @@ import { UpdateClinicsSpecialtiesDto } from 'src/clinics-specialties/dto/update-
 })
 export class SpecialtiesController {
   constructor(
-    @Inject(SPECIALTIES_SERVICE_INTERFACE)
     private readonly specialtiesService: ISpecialtiesService
   ) {}
 

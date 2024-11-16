@@ -1,26 +1,23 @@
 import {
   BadRequestException,
-  Inject,
   Injectable,
-  NotFoundException,
+  NotFoundException
 } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { ClinicEntity } from './entities/clinics.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateClinicDto } from './dto/create-clinics.dto';
-import { RegionalService } from 'src/regionals/regional.service';
 import { cnpj } from 'cpf-cnpj-validator';
+import { IRegionalService } from 'src/regionals/interface/regional.interface';
+import { Repository } from 'typeorm';
+import { CreateClinicDto } from './dto/create-clinics.dto';
 import { UpdateClinicsDto } from './dto/update-clinics.dto';
-import { REGIONAL_SERVICE_INTERFACE } from 'src/regionals/inject.interface.type';
-import { IRegionalService } from 'src/regionals/regional.interface';
-import { IClinicsService } from './clinics.interface';
+import { ClinicEntity } from './entities/clinics.entity';
+import { IClinicsService } from './interface/clinics.interface';
 
 @Injectable()
 export class ClinicsService implements IClinicsService {
   constructor(
     @InjectRepository(ClinicEntity)
     private readonly repository: Repository<ClinicEntity>,
-    @Inject(REGIONAL_SERVICE_INTERFACE)
+
     private readonly regionalService: IRegionalService,
   ) {}
 

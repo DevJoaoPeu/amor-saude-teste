@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { RegionalEntity } from './entities/regional.entity';
-import { RegionalService } from './regional.service';
-import { RegionalController } from './regional.controller';
-import { UserModule } from 'src/user/user.module';
 import { AuthModule } from 'src/auth/auth.module';
-import { REGIONAL_SERVICE_INTERFACE } from './inject.interface.type';
+import { UserModule } from 'src/user/user.module';
+import { RegionalEntity } from './entities/regional.entity';
+import { IRegionalService } from './interface/regional.interface';
+import { RegionalController } from './regional.controller';
+import { RegionalService } from './regional.service';
 
 @Module({
   imports: [
@@ -13,9 +13,9 @@ import { REGIONAL_SERVICE_INTERFACE } from './inject.interface.type';
   ],
   controllers: [RegionalController],
   providers: [RegionalService,{
-    provide: REGIONAL_SERVICE_INTERFACE,
+    provide: IRegionalService,
     useClass: RegionalService,
   }],
-  exports: [REGIONAL_SERVICE_INTERFACE],
+  exports: [IRegionalService],
 })
 export class RegionalModule {}

@@ -25,7 +25,7 @@ export class CreateClinicDto {
 
   @IsNotEmpty()
   @IsString()
-  @Length(14, 18) // Considerando a máscara 'XX.XXX.XXX/XXXX-XX'
+  @Length(14, 18)
   @ApiProperty({
     description: 'CNPJ da clínica',
     example: 'XX.XXX.XXX/XXXX-XX',
@@ -33,13 +33,11 @@ export class CreateClinicDto {
   cnpj: string;
 
   @IsNotEmpty()
-  @IsDate()
-  @Type(() => Date)
   @ApiProperty({
     description: 'Data de inauguração da clínica',
     example: '2024-08-15',
   })
-  dataInauguracao: Date;
+  dataInauguracao: string;
 
   @IsBoolean()
   @IsOptional()

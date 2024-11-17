@@ -2,7 +2,6 @@ import { ConflictException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { hash } from 'bcrypt';
-import { JWT_SERVICE_INTERFACE } from 'src/jwt/injection.interface.types';
 import { IJwtService } from 'src/jwt/interface/jwt-adapter.interface';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { IUserService } from 'src/user/interface/user.interface';
@@ -45,7 +44,7 @@ describe('AuthService', () => {
           },
         },
         {
-          provide: JWT_SERVICE_INTERFACE,
+          provide: IJwtService,
           useValue: {
             sign: jest.fn().mockReturnValue(expectedToken.token),
             verify: jest.fn(),
@@ -57,7 +56,7 @@ describe('AuthService', () => {
     authService = module.get<IAuthService>(IAuthService);
     userRepository = module.get<Repository<UserEntity>>(getRepositoryToken(UserEntity));
     userService = module.get<IUserService>(IUserService);
-    jwtService = module.get<IJwtService>(JWT_SERVICE_INTERFACE);
+    jwtService = module.get<IJwtService>(IJwtService);
   });
 
   describe('AuthService - create', () => {

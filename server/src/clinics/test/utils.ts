@@ -33,3 +33,5 @@ export const errorResponse: UserAlredyExistsDto = {
     error: 'User already exists',
     message: 'Conflict',
 };
+
+export const userId: string = '87accf20-1940-4d46-833e-55299845da64';

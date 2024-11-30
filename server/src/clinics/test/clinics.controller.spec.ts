@@ -4,8 +4,7 @@ import { IClinicsService } from "../interface/clinics.interface";
 import { AuthGuard } from "src/guards/auth.guard";
 import { IRegionalService } from "src/regionals/interface/regional.interface";
 import { ConflictException, NotFoundException } from "@nestjs/common";
-import { body, regionalNotFound } from "./utils";
-import { errorResponse } from "src/auth/test/utils";
+import { body, clinicsNotFound, deleteReturn, errorResponse, regionalNotFound } from "./utils";
 
 describe('ClinicsController', () => {
     let clinicsController: ClinicsController;
@@ -55,5 +54,87 @@ describe('ClinicsController', () => {
             expect(clinicsService.create).toHaveBeenCalledTimes(1);
             expect(clinicsService.create).toHaveBeenCalledWith(body);
         });
+
+        it("deve criar uma clínica", async () => {
+            (clinicsService.create as jest.Mock).mockResolvedValue(body);
+        
+            const result = await clinicsController.create(body);
+        
+            expect(result).toEqual(body);
+            expect(clinicsService.create).toHaveBeenCalledTimes(1);
+            expect(clinicsService.create).toHaveBeenCalledWith(body);
+        });
     });
-});
+
+    describe('readOne', () => {
+        it('deve retornar erro caso clínica nao exista', async () => {
+            (clinicsService.readOne as jest.Mock).mockRejectedValue(clinicsNotFound);
+        
+            await expect(clinicsController.readOne('1')).rejects.toEqual(clinicsNotFound);
+        
+            expect(clinicsService.readOne).toHaveBeenCalledTimes(1);
+            expect(clinicsService.readOne).toHaveBeenCalledWith('1');
+        });
+
+        it('deve retornar uma clínica', async () => {
+            (clinicsService.readOne as jest.Mock).mockResolvedValue(body);
+        
+            const result = await clinicsController.readOne('1');
+        
+            expect(result).toEqual(body);
+            expect(clinicsService.readOne).toHaveBeenCalledTimes(1);
+            expect(clinicsService.readOne).toHaveBeenCalledWith('1');
+        });
+    });
+
+    describe('readAll', () => {
+        it('deve retornar uma lista de clínica', async () => {
+            (clinicsService.readAll as jest.Mock).mockResolvedValue([body]);
+        
+            const result = await clinicsController.readAll();
+        
+            expect(result).toEqual([body]);
+            expect(clinicsService.readAll).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe('update', () => {
+        it('deve retornar erro caso clínica nao exista', async () => {
+            (clinicsService.update as jest.Mock).mockRejectedValue(clinicsNotFound);
+        
+            await expect(clinicsController.update(body, '1')).rejects.toEqual(clinicsNotFound);
+        
+            expect(clinicsService.update).toHaveBeenCalledTimes(1);
+            expect(clinicsService.update).toHaveBeenCalledWith(body, '1');
+        });
+
+        it('deve atualizar uma clínica', async () => {
+            (clinicsService.update as jest.Mock).mockResolvedValue(body);
+        
+            const result = await clinicsController.update(body, '1');        
+            expect(result).toEqual(body);
+            expect(clinicsService.update).toHaveBeenCalledTimes(1);
+            expect(clinicsService.update).toHaveBeenCalledWith(body, '1');
+        });
+    });
+
+    describe('delete', () => {
+        it('deve retornar erro caso clínica nao exista', async () => {
+            (clinicsService.delete as jest.Mock).mockRejectedValue(clinicsNotFound);
+        
+            await expect(clinicsController.delete('1')).rejects.toEqual(clinicsNotFound);
+        
+            expect(clinicsService.delete).toHaveBeenCalledTimes(1);
+            expect(clinicsService.delete).toHaveBeenCalledWith('1');
+        });
+
+        it('deve deletar uma clínica', async () => {
+            (clinicsService.delete as jest.Mock).mockResolvedValue(deleteReturn);
+        
+            const result = await clinicsController.delete('1');        
+            expect(result).toEqual(deleteReturn);
+            expect(clinicsService.delete).toHaveBeenCalledTimes(1);
+            expect(clinicsService.delete).toHaveBeenCalledWith('1');
+        });
+    });
+})

@@ -292,4 +292,16 @@ describe('', () => {
             await expect(clinicsService.update(updatedClinic, mockClinicEntity.id)).rejects.toThrow(NotFoundException);
         })
     })
+
+    describe('transformCnpj', () => {
+        it('deve retornar um cnpj formatado', () => {
+            const value = '09512501000121';
+            expect(clinicsService.transformCnpj(value)).toEqual('09.512.501/0001-21');
+        })
+
+        it('deve lançar um error se o cnpj for invalido', () => {
+            const cnpj = 'invalido';
+            expect(() => clinicsService.transformCnpj(cnpj)).toThrow(new BadRequestException('CNPJ inválido'));
+        })
+    })
 })

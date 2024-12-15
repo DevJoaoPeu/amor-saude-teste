@@ -9,4 +9,5 @@ export abstract class IClinicsService {
     abstract delete(id: string): Promise<{ message: string; affected: number }>;
     abstract update(data: UpdateClinicsDto, id: string): Promise<ClinicEntity>;
     abstract clinicsAlredyExists(id: string): Promise<ClinicEntity>;
+    abstract transformCnpj(cnpj: string): string;
 }

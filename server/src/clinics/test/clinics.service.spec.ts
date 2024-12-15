@@ -202,4 +202,34 @@ describe('', () => {
             expect(await clinicsService.readAll()).toEqual([]);
         })
     })
+
+    describe('delete', () => {
+        const mockClinicEntity = {
+            id: '1',
+            razaoSocial: 'razao social',
+            nomeFantasia: 'nome fantasia',
+            cnpj: '09.512.501/0001-21',
+            dataInauguracao: new Date(),
+            ativa: true,
+            regional: {
+                id: '123',
+                name: 'Regional'
+            },
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        } 
+
+        it('deve deletar uma clínica', async () => {
+            jest.spyOn(repository, 'findOne').mockResolvedValue(mockClinicEntity);
+            jest.spyOn(repository, 'delete').mockResolvedValue({ raw: 1, affected: 1 });
+
+            await expect(clinicsService.delete('123')).resolves.toEqual({ message: 'Record deleted successfully', affected: 1 });
+        })
+
+        it('deve lançar um erro se a clínica nao existir', async () => {
+            jest.spyOn(repository, 'findOne').mockResolvedValue(undefined);
+
+            await expect(clinicsService.delete('123')).rejects.toThrow(new NotFoundException('Clinics not found'));
+        })
+    })
 })

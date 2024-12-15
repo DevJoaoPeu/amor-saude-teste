@@ -7,6 +7,7 @@ import { ClinicEntity } from "../entities/clinics.entity";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { create } from "domain";
 import { CreateClinicDto } from "../dto/create-clinics.dto";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
 
 describe('', () => {
     let clinicsService: IClinicsService;
@@ -54,33 +55,33 @@ describe('', () => {
     })
 
     describe('create', () => {
+        const mockClinic: CreateClinicDto = {
+            razaoSocial: 'razao social',
+            nomeFantasia: 'nome fantasia',
+            cnpj: '09.512.501/0001-21',
+            dataInauguracao: '2024-08-15',
+            ativa: true,
+            regional: '123',
+        } 
+
+        const mockRegional = {
+            id: '123',
+            name: 'Regional'
+        }
+
+        const mockClinicEntity: ClinicEntity = {
+            id: '1',
+            razaoSocial: mockClinic.razaoSocial,
+            nomeFantasia: mockClinic.nomeFantasia,
+            cnpj: '09.512.501/0001-21', 
+            dataInauguracao: new Date(mockClinic.dataInauguracao),
+            ativa: mockClinic.ativa,
+            regional: mockRegional,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        };
+
         it('deve criar uma clínica', async () => {
-            const mockClinic: CreateClinicDto = {
-                razaoSocial: 'razao social',
-                nomeFantasia: 'nome fantasia',
-                cnpj: '09.512.501/0001-21',
-                dataInauguracao: '2024-08-15',
-                ativa: true,
-                regional: '123',
-            } 
-
-            const mockRegional = {
-                id: '123',
-                name: 'Regional'
-            }
-
-            const mockClinicEntity: ClinicEntity = {
-                id: '1',
-                razaoSocial: mockClinic.razaoSocial,
-                nomeFantasia: mockClinic.nomeFantasia,
-                cnpj: '09.512.501/0001-21', 
-                dataInauguracao: new Date(mockClinic.dataInauguracao),
-                ativa: mockClinic.ativa,
-                regional: mockRegional,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-            };
-
             jest.spyOn(regionalService, 'regionalAlredyExists').mockResolvedValue(mockRegional);
             jest.spyOn(repository, 'create').mockReturnValue(mockClinicEntity);
             jest.spyOn(repository, 'save').mockResolvedValue(mockClinicEntity);
@@ -96,6 +97,31 @@ describe('', () => {
                 ...mockClinicEntity,
                 dataInauguracao: new Date(mockClinic.dataInauguracao),
             });
+        })
+
+        it('deve lançar um erro se a regional nao existir', async () => {
+            jest.spyOn(regionalService, 'regionalAlredyExists' ).mockRejectedValue(new NotFoundException('Regional not found'));
+
+            await expect(clinicsService.create(mockClinic)).rejects.toThrow(NotFoundException);
+        })
+
+        it('deve lançar um error se o cnpj for invalido', async () => {
+            const mockClinic: CreateClinicDto = {
+                razaoSocial: 'razao social',
+                nomeFantasia: 'nome fantasia',
+                cnpj: 'invalido',
+                dataInauguracao: '2024-08-15',
+                ativa: true,
+                regional: '123',
+            } 
+
+            await expect(clinicsService.create(mockClinic)).rejects.toThrow(new BadRequestException('CNPJ inválido'));
+        })
+
+        it('deve lançar um erro se o cnpj ja existir', async () => {
+            jest.spyOn(repository, 'findOne').mockResolvedValue(mockClinicEntity);
+
+            await expect(clinicsService.create(mockClinic)).rejects.toThrow(new NotFoundException('Already registered clinic'));
         })
     })
 })

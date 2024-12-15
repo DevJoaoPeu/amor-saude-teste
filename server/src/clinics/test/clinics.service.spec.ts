@@ -232,4 +232,64 @@ describe('', () => {
             await expect(clinicsService.delete('123')).rejects.toThrow(new NotFoundException('Clinics not found'));
         })
     })
+
+    describe('update', () => {
+        const mockClinicEntity = {
+            id: '1',
+            razaoSocial: 'razao social',
+            nomeFantasia: 'nome fantasia',
+            cnpj: '09.512.501/0001-21',
+            dataInauguracao: new Date(),
+            ativa: true,
+            regional: {
+                id: '123',
+                name: 'Regional'
+            },
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        } 
+
+        const mockRegional = {
+            id: '123',
+            name: 'Regional'
+        }
+
+        const updatedClinic = {
+            razaoSocial: 'Regional 2',
+        }
+
+        it('deve atualizar uma clínica', async () => {
+            jest.spyOn(repository, 'findOne').mockResolvedValue(mockClinicEntity);
+            jest.spyOn(regionalService, 'regionalAlredyExists').mockResolvedValue(mockRegional);
+
+            expect(await clinicsService.update(updatedClinic, mockClinicEntity.id)).toEqual({
+                ...mockClinicEntity,
+                regional: mockRegional,
+            });
+        })
+
+        it('Deve lançar um erro se a clínica nao existir', async () => {
+            jest.spyOn(repository, 'findOne').mockResolvedValue(undefined);
+
+            await expect(clinicsService.update(updatedClinic, mockClinicEntity.id)).rejects.toThrow(new NotFoundException('Clinics not found'));
+        })
+
+        it('Deve lançar um erro se a regional nao existir', async () => {
+            jest.spyOn(repository, 'findOne').mockResolvedValue(undefined);
+            jest.spyOn(regionalService, 'regionalAlredyExists').mockRejectedValue(new NotFoundException('Regional not found'));
+
+            await expect(clinicsService.update(updatedClinic, mockClinicEntity.id)).rejects.toThrow(NotFoundException);
+        })
+
+        it('deve lançar um error se o cnpj não for valido', async () => {
+            const updatedClinic = {
+                cnpj: 'Regional 2',
+            }
+
+            jest.spyOn(repository, 'findOne').mockResolvedValue(mockClinicEntity);
+            jest.spyOn(regionalService, 'regionalAlredyExists').mockResolvedValue(mockRegional);
+
+            await expect(clinicsService.update(updatedClinic, mockClinicEntity.id)).rejects.toThrow(NotFoundException);
+        })
+    })
 })

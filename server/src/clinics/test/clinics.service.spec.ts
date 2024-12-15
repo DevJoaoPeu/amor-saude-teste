@@ -8,6 +8,7 @@ import { getRepositoryToken } from "@nestjs/typeorm";
 import { create } from "domain";
 import { CreateClinicDto } from "../dto/create-clinics.dto";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
+import e from "express";
 
 describe('', () => {
     let clinicsService: IClinicsService;
@@ -122,6 +123,83 @@ describe('', () => {
             jest.spyOn(repository, 'findOne').mockResolvedValue(mockClinicEntity);
 
             await expect(clinicsService.create(mockClinic)).rejects.toThrow(new NotFoundException('Already registered clinic'));
+        })
+    })
+
+    describe('readOne', () => {
+        const mockClinicEntity = {
+            id: '1',
+            razaoSocial: 'razao social',
+            nomeFantasia: 'nome fantasia',
+            cnpj: '09.512.501/0001-21',
+            dataInauguracao: new Date(),
+            ativa: true,
+            regional: {
+                id: '123',
+                name: 'Regional'
+            },
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        } 
+
+        it('deve retornar uma clínica', async () => {
+            jest.spyOn(repository, 'findOne').mockResolvedValue(mockClinicEntity);
+
+            const clinic = await clinicsService.readOne(mockClinicEntity.id);
+
+            expect(clinic).toBe(mockClinicEntity);            
+        })
+
+        it('deve lançar um erro se a clínica nao existir', async () => {
+            jest.spyOn(repository, 'findOne').mockResolvedValue(undefined);
+
+            await expect(clinicsService.readOne(mockClinicEntity.id)).rejects.toThrow(new NotFoundException('Clinics not found'));
+        })
+    })
+
+    describe('readAll', () => {
+        it('deve retornar uma lista de clínica', async () => {
+            const mockClinicEntity = 
+                [
+                    {
+                        id: '1',
+                        razaoSocial: 'razao social',
+                        nomeFantasia: 'nome fantasia',
+                        cnpj: '09.512.501/0001-21',
+                        dataInauguracao: new Date(),
+                        ativa: true,
+                        regional: {
+                            id: '123',
+                            name: 'Regional'
+                        },
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                    },
+                    {
+                        id: '2',
+                        razaoSocial: 'razao social 2',
+                        nomeFantasia: 'nome fantasia 2',
+                        cnpj: '09.512.501/0001-21',
+                        dataInauguracao: new Date(),
+                        ativa: true,
+                        regional: {
+                            id: '123-2',
+                            name: 'Regional'
+                        },
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                    } 
+                ]
+
+            jest.spyOn(repository, 'find').mockResolvedValue(mockClinicEntity); 
+
+            expect(await clinicsService.readAll()).toEqual(mockClinicEntity);
+        })
+
+        it('deve retornar uma lista vazia', async () => {
+            jest.spyOn(repository, 'find').mockResolvedValue([]);
+
+            expect(await clinicsService.readAll()).toEqual([]);
         })
     })
 })

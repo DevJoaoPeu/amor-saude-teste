@@ -10,10 +10,36 @@ import { CreateClinicDto } from "../dto/create-clinics.dto";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import e from "express";
 
-describe('', () => {
+describe('ClinicsServices', () => {
     let clinicsService: IClinicsService;
     let regionalService: IRegionalService;
     let repository: Repository<ClinicEntity>;
+
+    const mockClinic: CreateClinicDto = {
+        razaoSocial: 'razao social',
+        nomeFantasia: 'nome fantasia',
+        cnpj: '09.512.501/0001-21',
+        dataInauguracao: '2024-08-15',
+        ativa: true,
+        regional: '123',
+    } 
+
+    const mockRegional = {
+        id: '123',
+        name: 'Regional'
+    }
+
+    const mockClinicEntity: ClinicEntity = {
+        id: '1',
+        razaoSocial: mockClinic.razaoSocial,
+        nomeFantasia: mockClinic.nomeFantasia,
+        cnpj: '09.512.501/0001-21', 
+        dataInauguracao: new Date(mockClinic.dataInauguracao),
+        ativa: mockClinic.ativa,
+        regional: mockRegional,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+    };
 
     beforeEach(async () => {
         const mockRepository = {
@@ -56,32 +82,6 @@ describe('', () => {
     })
 
     describe('create', () => {
-        const mockClinic: CreateClinicDto = {
-            razaoSocial: 'razao social',
-            nomeFantasia: 'nome fantasia',
-            cnpj: '09.512.501/0001-21',
-            dataInauguracao: '2024-08-15',
-            ativa: true,
-            regional: '123',
-        } 
-
-        const mockRegional = {
-            id: '123',
-            name: 'Regional'
-        }
-
-        const mockClinicEntity: ClinicEntity = {
-            id: '1',
-            razaoSocial: mockClinic.razaoSocial,
-            nomeFantasia: mockClinic.nomeFantasia,
-            cnpj: '09.512.501/0001-21', 
-            dataInauguracao: new Date(mockClinic.dataInauguracao),
-            ativa: mockClinic.ativa,
-            regional: mockRegional,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        };
-
         it('deve criar uma clínica', async () => {
             jest.spyOn(regionalService, 'regionalAlredyExists').mockResolvedValue(mockRegional);
             jest.spyOn(repository, 'create').mockReturnValue(mockClinicEntity);
@@ -308,32 +308,6 @@ describe('', () => {
     describe("clinicsAlredyExists", () => {
         const id = '1';
 
-        const mockClinic: CreateClinicDto = {
-            razaoSocial: 'razao social',
-            nomeFantasia: 'nome fantasia',
-            cnpj: '09.512.501/0001-21',
-            dataInauguracao: '2024-08-15',
-            ativa: true,
-            regional: '123',
-        } 
-
-        const mockRegional = {
-            id: '123',
-            name: 'Regional'
-        }
-
-        const mockClinicEntity: ClinicEntity = {
-            id: '1',
-            razaoSocial: mockClinic.razaoSocial,
-            nomeFantasia: mockClinic.nomeFantasia,
-            cnpj: '09.512.501/0001-21', 
-            dataInauguracao: new Date(mockClinic.dataInauguracao),
-            ativa: mockClinic.ativa,
-            regional: mockRegional,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        };
-
         it('deve retornar uma clínica', async () => {
             jest.spyOn(repository, 'findOne').mockResolvedValue(mockClinicEntity);
 
@@ -347,6 +321,25 @@ describe('', () => {
 
             await expect(clinicsService.clinicsAlredyExists(id))
             .rejects.toThrow(new NotFoundException('Clinics not found'));
+        })
+    })
+
+    describe("clinicsCnpjAlredyExists", () => {
+        const cnpj = '09.512.501/0001-21';
+
+        it('deve retornar um erro caso encontre uma clinica', async () => {
+            jest.spyOn(repository, 'findOne').mockResolvedValue(mockClinicEntity);
+
+            await expect(clinicsService.clinicsCnpjAlredyExists(cnpj))
+            .rejects.toThrow(new NotFoundException('Already registered clinic'));
+        })
+
+        it('deve retornar undefined caso não encontre a clinica', async () => {
+            jest.spyOn(repository, 'findOne').mockResolvedValue(undefined);
+
+            const clinic = await clinicsService.clinicsCnpjAlredyExists(cnpj);
+
+            expect(clinic).toEqual(undefined);
         })
     })
 })

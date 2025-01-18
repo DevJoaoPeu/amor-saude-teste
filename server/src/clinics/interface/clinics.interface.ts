@@ -10,4 +10,5 @@ export abstract class IClinicsService {
     abstract update(data: UpdateClinicsDto, id: string): Promise<ClinicEntity>;
     abstract clinicsAlredyExists(id: string): Promise<ClinicEntity>;
     abstract transformCnpj(cnpj: string): string;
+    abstract clinicsCnpjAlredyExists(cnpj: string): Promise<ClinicEntity>;
 }

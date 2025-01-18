@@ -304,4 +304,49 @@ describe('', () => {
             expect(() => clinicsService.transformCnpj(cnpj)).toThrow(new BadRequestException('CNPJ inválido'));
         })
     })
+
+    describe("clinicsAlredyExists", () => {
+        const id = '1';
+
+        const mockClinic: CreateClinicDto = {
+            razaoSocial: 'razao social',
+            nomeFantasia: 'nome fantasia',
+            cnpj: '09.512.501/0001-21',
+            dataInauguracao: '2024-08-15',
+            ativa: true,
+            regional: '123',
+        } 
+
+        const mockRegional = {
+            id: '123',
+            name: 'Regional'
+        }
+
+        const mockClinicEntity: ClinicEntity = {
+            id: '1',
+            razaoSocial: mockClinic.razaoSocial,
+            nomeFantasia: mockClinic.nomeFantasia,
+            cnpj: '09.512.501/0001-21', 
+            dataInauguracao: new Date(mockClinic.dataInauguracao),
+            ativa: mockClinic.ativa,
+            regional: mockRegional,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        };
+
+        it('deve retornar uma clínica', async () => {
+            jest.spyOn(repository, 'findOne').mockResolvedValue(mockClinicEntity);
+
+            const clinic = await clinicsService.clinicsAlredyExists(id);
+
+            expect(clinic).toEqual(mockClinicEntity);
+        })
+
+        it('deve retornar um error', async () => {
+            jest.spyOn(repository, 'findOne').mockResolvedValue(undefined);
+
+            await expect(clinicsService.clinicsAlredyExists(id))
+            .rejects.toThrow(new NotFoundException('Clinics not found'));
+        })
+    })
 })

@@ -1,0 +1,30 @@
+name: Run Tests CI
+
+on:
+  pull_request:
+    branches: [main, develop] # Executa os testes quando um PR é criado para essas branches
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Run Tests
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          cache: 'yarn'
+
+      - name: Instalar dependências
+        run: yarn install --frozen-lockfile
+
+      - name: Executar os testes
+        run: yarn test --coverage
+
+      - name: Verificar falhas
+        if: failure()
+        run: exit 1 # Se falhar, a pipeline falha e impede o merge

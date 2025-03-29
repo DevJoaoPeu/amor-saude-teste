@@ -2,10 +2,7 @@ name: Run Tests CI
 
 on:
   pull_request:
-    branches: [main]
-
-  push:
-    branches: [main]
+    branches: [main, develop] # Executa os testes quando um PR é criado para essas branches
 
 jobs:
   test:
@@ -23,13 +20,11 @@ jobs:
           cache: 'yarn'
 
       - name: Instalar dependências
-        run: yarn
+        run: yarn install --frozen-lockfile
 
       - name: Executar os testes
-        run: yarn test
+        run: yarn test --coverage
 
-      - name: Publicar cobertura de testes (opcional)
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage/lcov.info
+      - name: Verificar falhas
+        if: failure()
+        run: exit 1 # Se falhar, a pipeline falha e impede o merge

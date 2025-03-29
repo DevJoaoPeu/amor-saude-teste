@@ -16,14 +16,14 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
-          cache: 'yarn'
+          node-version: "18.x"
+          cache: "yarn"
 
       - name: Instalar dependências
-        run: yarn install --frozen-lockfile
+        run: npm run install --frozen-lockfile
 
       - name: Executar os testes
-        run: yarn test --coverage
+        run: npm run test --coverage
 
       - name: Verificar falhas
         if: failure()

@@ -61,7 +61,7 @@ describe('ClinicsController', () => {
       );
 
       expect(clinicsService.create).toHaveBeenCalledTimes(1);
-      expect(clinicsService.create).toHaveBeenCalledWith(1);
+      expect(clinicsService.create).toHaveBeenCalledWith(body);
     });
 
     it('deve criar uma clínica', async () => {

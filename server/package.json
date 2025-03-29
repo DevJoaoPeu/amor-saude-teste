@@ -64,10 +64,6 @@
     "typescript": "^5.1.3"
   },
   "jest": {
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/dist/"
-    ],
     "moduleFileExtensions": [
       "js",
       "json",
